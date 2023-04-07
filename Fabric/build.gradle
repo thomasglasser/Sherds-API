@@ -30,6 +30,10 @@ loom {
             runDir("run")
         }
     }
+
+    mixin {
+        add sourceSets.main, "shardsapi.refmap.json"
+    }
 }
 
 

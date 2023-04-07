@@ -1,7 +1,7 @@
-package com.example.examplemod.platform;
+package dev.thomasglasser.shardsapi.platform;
 
-import com.example.examplemod.Constants;
 import com.example.examplemod.platform.services.IPlatformHelper;
+import dev.thomasglasser.shardsapi.ShardsApi;
 
 import java.util.ServiceLoader;
 
@@ -24,7 +24,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
+        ShardsApi.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

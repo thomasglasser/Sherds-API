@@ -1,39 +1,35 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "shardsapi",
     "version": "${version}",
   
-    "name": "Example Mod",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "name": "Shards API",
+    "description": "Makes adding new pottery shards easier",
     "authors": [
-      "Me!"
+      "Thomas Glasser"
     ],
     "contact": {
-      "homepage": "https://fabricmc.net/",
-      "sources": "https://github.com/FabricMC/fabric-example-mod"
+      "homepage": "https://github.com/thomasglasser/Shards-API/wiki",
+      "sources": "https://github.com/thomasglasser/Shards-API"
     },
   
-    "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
-  
+    "license": "All Rights Reserved",
+
     "environment": "*",
     "entrypoints": {
       "main": [
-        "com.example.examplemod.ExampleMod"
+        "dev.thomasglasser.shardsapi.ShardsApiFabric"
       ]
     },
     "mixins": [
-      "modid.mixins.json"
+      "shardsapi.mixins.json"
     ],
   
     "depends": {
       "fabricloader": ">=0.14",
       "fabric": "*",
-      "minecraft": "1.19.3",
+      "minecraft": "1.19.4",
       "java": ">=17"
-    },
-    "suggests": {
-      "another-mod": "*"
     }
-  }
+}
   

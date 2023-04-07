@@ -1,5 +1,10 @@
 package com.example.examplemod.platform.services;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+
 public interface IPlatformHelper {
 
     /**
@@ -32,5 +37,10 @@ public interface IPlatformHelper {
     default String getEnvironmentName() {
 
         return isDevelopmentEnvironment() ? "development" : "production";
+    }
+
+    default <T> T register(Registry<T> registry, ResourceLocation location, T t)
+    {
+        return Registry.register(registry, ResourceKey.create(registry.key(), location), t);
     }
 }
