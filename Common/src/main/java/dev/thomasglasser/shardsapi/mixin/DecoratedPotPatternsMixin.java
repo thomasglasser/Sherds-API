@@ -15,9 +15,7 @@ public class DecoratedPotPatternsMixin
     @Inject(method = "getResourceKey", at = @At("RETURN"), cancellable = true)
     private static void checkAddedPatterns(Item item, CallbackInfoReturnable<ResourceKey<String>> cir)
     {
-        System.out.println("Hey!");
         if (cir.getReturnValue() == null)
             cir.setReturnValue(PotteryShardRegistryImpl.getFor(item));
-        System.out.println("Hi!");
     }
 }
