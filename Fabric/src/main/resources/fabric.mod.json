@@ -14,8 +14,8 @@
     },
   
     "license": "All Rights Reserved",
-
-    "environment": "*",
+  "icon": "api.png",
+  "environment": "*",
     "entrypoints": {
       "main": [
         "dev.thomasglasser.shardsapi.ShardsApiFabric"

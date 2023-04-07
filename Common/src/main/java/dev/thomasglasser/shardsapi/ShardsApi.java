@@ -17,7 +17,7 @@ public class ShardsApi {
     public static void init() {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, Services.PLATFORM.getPlatformName(), Services.PLATFORM.getEnvironmentName());
 
-        PotteryShardRegistry.register(() -> Items.CACTUS, new ResourceLocation(MOD_ID, "api"));
-        PotteryShardRegistry.register(Items.ACACIA_BUTTON, DecoratedPotPatterns.ARCHER);
+//        PotteryShardRegistry.register(() -> Items.CACTUS, new ResourceLocation(MOD_ID, "api"));
+//        PotteryShardRegistry.register(Items.ACACIA_BUTTON, DecoratedPotPatterns.ARCHER);
     }
 }
