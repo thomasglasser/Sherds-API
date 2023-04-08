@@ -11,16 +11,11 @@ import java.util.function.Supplier;
 
 public class PotteryShardRegistryImpl
 {
-    private static final Map<Item, ResourceKey<String>> SHARDS = new HashMap<>();
+    private static final Map<Supplier<Item>, ResourceKey<String>> SHARDS = new HashMap<>();
 
     public static void register(Supplier<Item> shard, ResourceKey<String> key)
     {
-        register(shard.get(), key);
-    }
-
-    public static void register(Item shard, ResourceKey<String> key)
-    {
-        if (SHARDS.containsKey(shard) || DecoratedPotPatterns.getResourceKey(shard) != null)
+        if (SHARDS.containsKey(shard))
             throw new IllegalArgumentException("Item already registered with a pattern!");
         else
         {
@@ -28,9 +23,17 @@ public class PotteryShardRegistryImpl
         }
     }
 
+    public static void register(Item shard, ResourceKey<String> key)
+    {
+        if (DecoratedPotPatterns.getResourceKey(shard) != null)
+            throw new IllegalArgumentException("Item already registered with a pattern!");
+        else
+            register(() -> shard, key);
+    }
+
     @Nullable
     public static ResourceKey<String> getFor(Item item)
     {
-        return SHARDS.get(item);
+        return SHARDS.get((Supplier<Item>) () -> item);
     }
 }
