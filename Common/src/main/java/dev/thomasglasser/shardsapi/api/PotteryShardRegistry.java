@@ -10,6 +10,9 @@ import net.minecraft.world.item.Item;
 
 import java.util.function.Supplier;
 
+/**
+ * Registers pattern to item and puts pattern in {@link BuiltInRegistries#DECORATED_POT_PATTERNS} if not already
+ */
 public class PotteryShardRegistry
 {
     public static void register(Supplier<Item> shard, ResourceKey<String> key)

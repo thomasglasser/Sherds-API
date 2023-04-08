@@ -1,7 +1,7 @@
 package dev.thomasglasser.shardsapi.platform;
 
-import com.example.examplemod.platform.services.IPlatformHelper;
 import dev.thomasglasser.shardsapi.ShardsApi;
+import dev.thomasglasser.shardsapi.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
 

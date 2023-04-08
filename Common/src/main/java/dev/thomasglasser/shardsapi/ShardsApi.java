@@ -7,7 +7,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spongepowered.asm.launch.platform.MixinPlatformAgentMinecraftForge;
 
 public class ShardsApi {
     public static final String MOD_ID = "shardsapi";
@@ -17,7 +16,10 @@ public class ShardsApi {
     public static void init() {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, Services.PLATFORM.getPlatformName(), Services.PLATFORM.getEnvironmentName());
 
-//        PotteryShardRegistry.register(() -> Items.CACTUS, new ResourceLocation(MOD_ID, "api"));
-//        PotteryShardRegistry.register(Items.ACACIA_BUTTON, DecoratedPotPatterns.ARCHER);
+        if (Services.PLATFORM.isDevelopmentEnvironment())
+        {
+            PotteryShardRegistry.register(() -> Items.BARRIER, new ResourceLocation(MOD_ID, "api"));
+            PotteryShardRegistry.register(Items.LIGHT, DecoratedPotPatterns.ARCHER);
+        }
     }
 }

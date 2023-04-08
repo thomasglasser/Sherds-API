@@ -1,19 +1,19 @@
 {
-    "schemaVersion": 1,
-    "id": "shardsapi",
-    "version": "${version}",
-  
-    "name": "Shards API",
-    "description": "Makes adding new pottery shards easier",
-    "authors": [
-      "Thomas Glasser"
-    ],
-    "contact": {
-      "homepage": "https://github.com/thomasglasser/Shards-API/wiki",
-      "sources": "https://github.com/thomasglasser/Shards-API"
-    },
-  
-    "license": "All Rights Reserved",
+  "schemaVersion": 1,
+  "id": "shardsapi",
+  "version": "${version}",
+
+  "name": "Shards API",
+  "description": "Makes adding new pottery shards easier",
+  "authors": [
+    "Thomas Glasser"
+  ],
+  "contact": {
+    "homepage": "https://github.com/thomasglasser/Shards-API/wiki",
+    "sources": "https://github.com/thomasglasser/Shards-API"
+  },
+
+  "license": "All Rights Reserved",
   "icon": "api.png",
   "environment": "*",
     "entrypoints": {
