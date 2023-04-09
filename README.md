@@ -5,13 +5,13 @@ Note: You must add the item to the `minecraft:decorated_pot_shards` tag for it t
 
 This mod can be Jar-in-Jar'd so the user doesn't have to download anything.
 
-## How to Use
-After object init in your mod constructor (this can be the common constructor in arch and multiloader projects), put the following line of code with the item and key adjusted:
-`PotteryShardRegistry.register(ModItems.MY_ITEM, ModPatterns.MY_PATTERN);`.
+# How to Use
+Anytime after your variables are initalized, place this line of code with the item and pattern keys adjusted:
+`PotteryShardRegistry.register(new ResourceLocation(MyMod.MOD_ID, "my_item"), ModPatterns.MY_PATTERN);`.
 This also accepts Suppliers and RegistryObjects.
 Some examples:
 ```java
-            PotteryShardRegistry.register(() -> Items.BARRIER, new ResourceLocation(MOD_ID, "api"));
+            PotteryShardRegistry.register(new ResourceLocation("barrier"), new ResourceLocation(MOD_ID, "api"));
             PotteryShardRegistry.register(Items.LIGHT, DecoratedPotPatterns.ARCHER);
 ```
 
