@@ -1,21 +1,33 @@
 package dev.thomasglasser.shardsapi.impl;
 
+import dev.thomasglasser.shardsapi.mixin.accessor.ItemsToPotsAccessor;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class PotteryShardRegistryImpl
 {
-    private static final Map<Supplier<Item>, ResourceKey<String>> SHARDS = new HashMap<>();
+    private static final Map<ResourceLocation, ResourceKey<String>> SHARDS = new HashMap<>();
 
-    public static void register(Supplier<Item> shard, ResourceKey<String> key)
+    public static void register(ResourceLocation shard, ResourceKey<String> key)
     {
-        if (SHARDS.containsKey(shard))
+        boolean exists = false;
+
+        for (Item item : ItemsToPotsAccessor.getItemsToPots().keySet())
+        {
+            if (BuiltInRegistries.ITEM.getKey(item).equals(shard))
+            {
+                exists = true;
+                break;
+            }
+        }
+
+        if (SHARDS.containsKey(shard) || exists)
             throw new IllegalArgumentException("Item already registered with a pattern!");
         else
         {
@@ -23,17 +35,9 @@ public class PotteryShardRegistryImpl
         }
     }
 
-    public static void register(Item shard, ResourceKey<String> key)
-    {
-        if (DecoratedPotPatterns.getResourceKey(shard) != null)
-            throw new IllegalArgumentException("Item already registered with a pattern!");
-        else
-            register(() -> shard, key);
-    }
-
     @Nullable
     public static ResourceKey<String> getFor(Item item)
     {
-        return SHARDS.get((Supplier<Item>) () -> item);
+        return SHARDS.get(BuiltInRegistries.ITEM.getKey(item));
     }
 }

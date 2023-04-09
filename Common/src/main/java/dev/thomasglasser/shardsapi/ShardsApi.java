@@ -18,7 +18,7 @@ public class ShardsApi {
 
         if (Services.PLATFORM.isDevelopmentEnvironment())
         {
-            PotteryShardRegistry.register(() -> Items.BARRIER, new ResourceLocation(MOD_ID, "api"));
+            PotteryShardRegistry.register(new ResourceLocation("barrier"), new ResourceLocation(MOD_ID, "api"));
             PotteryShardRegistry.register(Items.LIGHT, DecoratedPotPatterns.ARCHER);
         }
     }

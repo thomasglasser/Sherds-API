@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
-archivesBaseName = "${mod_name}-forge-${minecraft_version}"
+archivesBaseName = "${mod_id}-forge-${minecraft_version}"
 
 minecraft {
 //    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version Waiting for 1.19.4
