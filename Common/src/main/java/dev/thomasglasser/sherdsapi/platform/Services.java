@@ -1,7 +1,7 @@
-package dev.thomasglasser.shardsapi.platform;
+package dev.thomasglasser.sherdsapi.platform;
 
-import dev.thomasglasser.shardsapi.ShardsApi;
-import dev.thomasglasser.shardsapi.platform.services.IPlatformHelper;
+import dev.thomasglasser.sherdsapi.SherdsApi;
+import dev.thomasglasser.sherdsapi.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
 
@@ -24,7 +24,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        ShardsApi.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
+        SherdsApi.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

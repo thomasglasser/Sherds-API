@@ -1,4 +1,4 @@
-package dev.thomasglasser.shardsapi.platform.services;
+package dev.thomasglasser.sherdsapi.platform.services;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

@@ -16,6 +16,8 @@ loom {
     runConfigs.configureEach {
         ideConfigGenerated = false
     }
+
+    accessWidenerPath = file("src/main/resources/sherdsapi.accesswidener")
 }
 
 configurations {

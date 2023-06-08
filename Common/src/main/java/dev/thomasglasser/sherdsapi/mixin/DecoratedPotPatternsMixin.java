@@ -1,6 +1,6 @@
-package dev.thomasglasser.shardsapi.mixin;
+package dev.thomasglasser.sherdsapi.mixin;
 
-import dev.thomasglasser.shardsapi.impl.PotteryShardRegistryImpl;
+import dev.thomasglasser.sherdsapi.impl.PotterySherdRegistryImpl;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DecoratedPotPatternsMixin
 {
     @Inject(method = "getResourceKey", at = @At("RETURN"), cancellable = true)
-    private static void checkAddedPatterns(Item item, CallbackInfoReturnable<ResourceKey<String>> cir)
+    private static void sherdsapi_checkAddedPatterns(Item item, CallbackInfoReturnable<ResourceKey<String>> cir)
     {
         if (cir.getReturnValue() == null)
-            cir.setReturnValue(PotteryShardRegistryImpl.getFor(item));
+            cir.setReturnValue(PotterySherdRegistryImpl.getFor(item));
     }
 }

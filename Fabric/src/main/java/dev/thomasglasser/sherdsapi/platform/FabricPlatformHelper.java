@@ -1,6 +1,6 @@
-package dev.thomasglasser.shardsapi.platform;
+package dev.thomasglasser.sherdsapi.platform;
 
-import dev.thomasglasser.shardsapi.platform.services.IPlatformHelper;
+import dev.thomasglasser.sherdsapi.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class FabricPlatformHelper implements IPlatformHelper {

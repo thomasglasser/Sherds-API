@@ -1,6 +1,6 @@
-package dev.thomasglasser.shardsapi.platform;
+package dev.thomasglasser.sherdsapi.platform;
 
-import dev.thomasglasser.shardsapi.platform.services.IPlatformHelper;
+import dev.thomasglasser.sherdsapi.platform.services.IPlatformHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

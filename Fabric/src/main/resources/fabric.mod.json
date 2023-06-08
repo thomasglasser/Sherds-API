@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "shardsapi",
+  "id": "sherdsapi",
   "version": "${version}",
 
-  "name": "Shards API",
+  "name": "Sherds API",
   "description": "Makes adding new pottery shards easier",
   "authors": [
     "Thomas Glasser"
   ],
   "contact": {
-    "homepage": "https://github.com/thomasglasser/Shards-API/wiki",
-    "sources": "https://github.com/thomasglasser/Shards-API"
+    "homepage": "https://github.com/thomasglasser/Sherds-API/wiki",
+    "sources": "https://github.com/thomasglasser/Sherds-API"
   },
 
   "license": "All Rights Reserved",
@@ -18,17 +18,17 @@
   "environment": "*",
     "entrypoints": {
       "main": [
-        "dev.thomasglasser.shardsapi.ShardsApiFabric"
+        "dev.thomasglasser.sherdsapi.SherdsApiFabric"
       ]
     },
     "mixins": [
-      "shardsapi.mixins.json"
+      "sherdsapi.mixins.json"
     ],
   
     "depends": {
       "fabricloader": ">=0.14",
       "fabric": "*",
-      "minecraft": "1.19.4",
+      "minecraft": "1.20",
       "java": ">=17"
     }
 }

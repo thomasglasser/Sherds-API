@@ -1,4 +1,4 @@
-package dev.thomasglasser.shardsapi.mixin.accessor;
+package dev.thomasglasser.sherdsapi.mixin.accessor;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;

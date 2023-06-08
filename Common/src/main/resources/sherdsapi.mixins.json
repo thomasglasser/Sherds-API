@@ -1,11 +1,11 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "dev.thomasglasser.shardsapi.mixin",
+    "package": "dev.thomasglasser.sherdsapi.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-        "DecoratedPotPatternsMixin",
-        "accessor.ItemsToPotsAccessor"
+      "DecoratedPotPatternsMixin",
+      "accessor.ItemsToPotsAccessor"
     ],
     "client": [
     ],

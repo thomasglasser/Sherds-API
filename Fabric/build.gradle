@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.+'
     id 'maven-publish'
     id 'idea'
 }
@@ -34,6 +34,8 @@ loom {
     mixin {
         add sourceSets.main, "shardsapi.refmap.json"
     }
+
+    accessWidenerPath = project(":Common").file("src/main/resources/sherdsapi.accesswidener")
 }
 
 
