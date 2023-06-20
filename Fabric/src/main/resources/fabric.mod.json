@@ -24,8 +24,10 @@
     "mixins": [
       "sherdsapi.mixins.json"
     ],
-  
-    "depends": {
+
+  "accessWidener" : "sherdsapi.accesswidener",
+
+  "depends": {
       "fabricloader": ">=0.14",
       "fabric": "*",
       "minecraft": ">=1.20.1",
