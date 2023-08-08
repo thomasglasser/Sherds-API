@@ -12,7 +12,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.+'
+    id 'net.neoforged.gradle' version '6.+'
 }
 
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
@@ -21,9 +21,7 @@ apply plugin: 'org.spongepowered.mixin'
 archivesBaseName = "${mod_id}-forge-${minecraft_version}"
 
 minecraft {
-//    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version Waiting for 1.19.4
-//    mappings channel: 'parchment', version: previous_minecraft_version + '-' + parchment_version + '-' + minecraft_version
-    mappings channel: 'parchment', version: '1.19.3-' + parchment_version + '-' + minecraft_version
+    mappings channel: 'parchment', version: parchment_version + '-' + minecraft_version
 
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
         // This location is hardcoded in Forge and can not be changed.
@@ -81,7 +79,7 @@ minecraft {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
