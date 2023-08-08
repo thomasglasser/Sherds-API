@@ -32,7 +32,7 @@ loom {
     }
 
     mixin {
-        add sourceSets.main, "shardsapi.refmap.json"
+        add sourceSets.main, "sherdsapi.refmap.json"
     }
 
     accessWidenerPath = project(":Common").file("src/main/resources/sherdsapi.accesswidener")

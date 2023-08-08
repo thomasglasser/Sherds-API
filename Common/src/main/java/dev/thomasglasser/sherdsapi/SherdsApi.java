@@ -16,10 +16,7 @@ public class SherdsApi {
     public static void init() {
         LOGGER.info("Initializing {} for {} in a {} environment...", MOD_NAME, Services.PLATFORM.getPlatformName(), Services.PLATFORM.getEnvironmentName());
 
-        if (Services.PLATFORM.isDevelopmentEnvironment())
-        {
-            PotterySherdRegistry.register(new ResourceLocation("barrier"), new ResourceLocation(MOD_ID, "api"));
-            PotterySherdRegistry.register(Items.LIGHT, DecoratedPotPatterns.ARCHER);
-        }
+        PotterySherdRegistry.register(new ResourceLocation("barrier"), new ResourceLocation(MOD_ID, "api"));
+        PotterySherdRegistry.register(Items.LIGHT, DecoratedPotPatterns.ARCHER);
     }
 }

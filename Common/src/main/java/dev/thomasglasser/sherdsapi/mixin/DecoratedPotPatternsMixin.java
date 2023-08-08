@@ -15,7 +15,7 @@ public class DecoratedPotPatternsMixin
     @Inject(method = "getResourceKey", at = @At("RETURN"), cancellable = true)
     private static void sherdsapi_checkAddedPatterns(Item item, CallbackInfoReturnable<ResourceKey<String>> cir)
     {
-        if (cir.getReturnValue() == null)
+        if (cir.getReturnValue() == null && PotterySherdRegistryImpl.getFor(item) != null)
             cir.setReturnValue(PotterySherdRegistryImpl.getFor(item));
     }
 }
