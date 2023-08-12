@@ -1,3 +1,16 @@
+plugins {
+    id 'com.matyrobbrt.mc.registrationutils' version "${previous_minecraft_version}-${registration_utils_version}"
+}
+
+registrationUtils {
+    group 'dev.thomasglasser.sherdsapi.registration'
+    projects {
+        Fabric { type 'fabric' } // The fabric project
+        Forge { type 'forge' } // The forge project
+        Common { type 'common' } // The common project
+    }
+}
+
 subprojects {
     
     apply plugin: 'java'

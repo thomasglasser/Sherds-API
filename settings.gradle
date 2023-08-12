@@ -41,5 +41,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'Shards API'
+rootProject.name = 'Sherds API'
 include("Common", "Fabric", "Forge")
