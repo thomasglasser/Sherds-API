@@ -23,7 +23,7 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Sherds API" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
-#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+updateJSONURL = "https://api.modrinth.com/updates/sherdsapi/forge_updates.json"
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://github.com/thomasglasser/Sherds-API" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
