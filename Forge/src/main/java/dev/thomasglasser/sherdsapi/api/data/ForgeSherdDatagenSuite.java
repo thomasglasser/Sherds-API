@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class SherdForgeDatagenSuite extends BaseSherdDatagenSuite
+public class ForgeSherdDatagenSuite extends BaseSherdDatagenSuite
 {
 	private final CompletableFuture<HolderLookup.Provider> registries;
 
-	public SherdForgeDatagenSuite(GatherDataEvent event, final String modid)
+	public ForgeSherdDatagenSuite(GatherDataEvent event, final String modid)
 	{
 		super(modid);
 		DataGenerator generator = event.getGenerator();

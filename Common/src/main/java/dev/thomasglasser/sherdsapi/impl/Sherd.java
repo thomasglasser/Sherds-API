@@ -27,6 +27,16 @@ public record Sherd(Supplier<Item> itemSupplier, ResourceKey<String> pattern)
         this(item, ResourceKey.create(Registries.DECORATED_POT_PATTERNS, pattern));
     }
 
+    public Sherd(ResourceLocation item, ResourceKey<String> pattern)
+    {
+        this(BuiltInRegistries.ITEM.get(item), pattern);
+    }
+
+    public Sherd(ResourceLocation item, ResourceLocation pattern)
+    {
+        this(item, ResourceKey.create(Registries.DECORATED_POT_PATTERNS, pattern));
+    }
+
     public Sherd(Supplier<Item> item, ResourceLocation pattern)
     {
         this(item, ResourceKey.create(Registries.DECORATED_POT_PATTERNS, pattern));
