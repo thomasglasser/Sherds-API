@@ -31,7 +31,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        loader: [ NeoForge, Fabric ]
+        loader: [ Forge, Fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
