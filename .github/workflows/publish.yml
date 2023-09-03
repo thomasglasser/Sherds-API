@@ -21,7 +21,7 @@ jobs:
     needs: call-build-workflow
     runs-on: ubuntu-latest
     env:
-      changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/' + inputs.last_version + "..." + inputs.version
+      changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/${inputs.last_version}...${inputs.version}'
     permissions:
       contents: write
     strategy:
