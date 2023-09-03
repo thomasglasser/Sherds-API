@@ -84,7 +84,6 @@ jobs:
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
-          loaders: ["forge", "neoforge"]
           changelog: ${{ env.changelog }}
           java: Java 17
 
@@ -100,7 +99,6 @@ jobs:
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
-          loaders: [ "fabric", "quilt" ]
           changelog: ${{ env.changelog }}
           java: Java 17
 

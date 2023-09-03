@@ -36,6 +36,8 @@ authors="Thomas Glasser" #optional
 description='''
 Makes adding new pottery shards easier
 '''
+[mc-publish]
+    loaders = ['forge', 'neoforge']
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.sherdsapi]] #optional
     # the modid of the dependency
