@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
         run: |
           export loader=${{ matrix.loader }}
-          export name=$(ls ${loader}/build/libs/ | grep shadow -v | grep sources -v | awk -F.jar '{print $1}')
+          export name=$(ls ${loader}/build/libs/ | grep shadow -v | grep sources -v | grep javadoc -v | awk -F.jar '{print $1}')
           export mod_name=$(echo $name | awk -F- '{print $1}')
           export loader_name=$(echo $name | awk -F- '{print $2}')
           export mc_version=$(echo $name | awk -F- '{print $3}')
@@ -68,7 +68,7 @@ jobs:
 #          files: |
 #            ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
 #            ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
-#          name : ${{ steps.shimmer_env.outputs.name }}
+#          name : ${{ inputs.title }}
 #          version : ${{ steps.shimmer_env.outputs.full_version }}
 #          changelog: ${{ env.changelog }}
 #          java : Java 17
@@ -82,8 +82,9 @@ jobs:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
-          name: ${{ steps.shimmer_env.outputs.name }}
-          version: ${{ steps.shimmer_env.outputs.full_version }}
+          name: ${{ inputs.title }}
+          version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
+          loaders: ["forge", "neoforge"]
           changelog: ${{ env.changelog }}
           java: Java 17
 
@@ -97,8 +98,9 @@ jobs:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
-          name: ${{ steps.shimmer_env.outputs.name }}
-          version: ${{ steps.shimmer_env.outputs.full_version }}
+          name: ${{ inputs.title }}
+          version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
+          loaders: [ "fabric", "quilt" ]
           changelog: ${{ env.changelog }}
           java: Java 17
 
