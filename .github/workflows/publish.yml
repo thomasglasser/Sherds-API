@@ -17,7 +17,13 @@ on:
         type: string
 
 jobs:
+  call-build-workflow:
+    permissions:
+      contents: read
+    uses: "./.github/workflows/build.yml"
+
   publish:
+    needs: call-build-workflow
     runs-on: ubuntu-latest
     env:
       changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/${inputs.last_version}...${inputs.version}'
