@@ -78,6 +78,7 @@ jobs:
       - name: Publish Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
+        if : (matrix.website == 'modrinth')
         with:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
@@ -93,6 +94,7 @@ jobs:
       - name: Publish Curseforge Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
+        if: (matrix.website == 'curseforge')
         with:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
