@@ -18,7 +18,6 @@ on:
 
 jobs:
   publish:
-    needs: call-build-workflow
     runs-on: ubuntu-latest
     env:
       changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/${inputs.last_version}...${inputs.version}'
