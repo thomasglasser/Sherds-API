@@ -26,12 +26,12 @@ jobs:
     needs: call-build-workflow
     runs-on: ubuntu-latest
     env:
-      changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/${inputs.last_version}...${inputs.version}'
+      changelog: '**Full Changelog**: https://github.com/thomasglasser/Sherds-API/compare/'
     permissions:
       contents: write
     strategy:
       matrix:
-        loader: [ Forge, Fabric ]
+        loader: [ forge, fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
@@ -84,7 +84,7 @@ jobs:
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
-          changelog: ${{ env.changelog }}
+          changelog: ${{ env.changelog }}${inputs.last_version}...${inputs.version}'
           java: Java 17
 
           modrinth-id: nOUYhAZV
@@ -99,7 +99,7 @@ jobs:
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.full_version }}+${{ matrix.loader }}
-          changelog: ${{ env.changelog }}
+          changelog: ${{ env.changelog }}${inputs.last_version}...${inputs.version}'
           java: Java 17
 
           curseforge-id: 847583
