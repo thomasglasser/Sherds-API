@@ -85,7 +85,7 @@ jobs:
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.mod_version }}+${{ matrix.loader }}
-          changelog: ${{ env.changelog }}${inputs.last_version}...${inputs.version}'
+          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
 
           modrinth-id: nOUYhAZV
