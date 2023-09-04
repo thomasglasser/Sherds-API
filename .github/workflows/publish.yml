@@ -62,11 +62,15 @@ jobs:
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if: (matrix.website == 'github_release')
+        if : (matrix.website == 'github_release' && matrix.loader = 'Common')
         with:
           files: |
-            ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
-            ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
+            Common/build/libs/!(*-@(dev|sources|javadoc)).jar
+            Common/build/libs/*-@(dev|sources|javadocs).jar
+            Forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            Forge/build/libs/*-@(dev|sources|javadocs).jar
+            Fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            Fabric/build/libs/*-@(dev|sources|javadocs).jar
           name : ${{ inputs.title }}
           version: ${{ steps.shimmer_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
