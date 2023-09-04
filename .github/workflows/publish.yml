@@ -36,14 +36,14 @@ jobs:
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
     steps:
-      - name: Download shimmer artifact
+      - name: Download sherdsapi artifact
         uses: actions/download-artifact@v3
         continue-on-error: true
         with:
-          name: Shimmer
+          name: Sherds API
 
       - name: Checking and setting the environment
-        id: shimmer_env
+        id: sherdsapi_env
         continue-on-error: true
         run: |
           export loader=${{ matrix.loader }}
@@ -62,7 +62,7 @@ jobs:
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if : (matrix.website == 'github_release' && matrix.loader == 'Common')
+        if : (matrix.website == 'github_release' && matrix.loader == 'Fabric')
         with:
           files: |
             Common/build/libs/!(*-@(dev|sources|javadoc)).jar
@@ -72,11 +72,13 @@ jobs:
             Fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             Fabric/build/libs/*-@(dev|sources|javadocs).jar
           name : ${{ inputs.title }}
-          version: ${{ steps.shimmer_env.outputs.mod_version }}
+          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
-          github-tag: ${{ steps.shimmer_env.outputs.mod_version }}
+          github-tag: ${{ steps.sherdsapi_env.outputs.mod_version }}
           github-generate-changelog: true
           java : Java 17
+          game-versions: |
+            >=1.20
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -89,9 +91,11 @@ jobs:
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.shimmer_env.outputs.mod_version }}+${{ matrix.loader }}
+          version: ${{ steps.sherdsapi_env.outputs.mod_version }}+${{ matrix.loader }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
+          game-versions: |
+            >=1.20
 
           modrinth-id: nOUYhAZV
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -105,9 +109,11 @@ jobs:
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.shimmer_env.outputs.mod_version }}+${{ matrix.loader }}
+          version: ${{ steps.sherdsapi_env.outputs.mod_version }}+${{ matrix.loader }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
+          game-versions: |
+            >=1.20
 
           curseforge-id: 847583
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}

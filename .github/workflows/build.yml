@@ -32,8 +32,9 @@ jobs:
       - name: Upload Jars
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Shimmer
+          name: Sherds API
           if-no-files-found: error
           path: |
             Fabric/build/libs
             Forge/build/libs
+            Common/build/libs
