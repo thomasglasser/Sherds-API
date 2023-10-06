@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.+'
+    id 'fabric-loom' version '1.2.+'
     id 'maven-publish'
     id 'idea'
 }
@@ -48,7 +48,7 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     source(project(":Common").sourceSets.main.allSource)
 }
 
