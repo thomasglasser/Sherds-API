@@ -15,6 +15,10 @@ on:
         description: "new mod version"
         required: true
         type: string
+      game_versions:
+        description: "the minecraft versions it supports"
+        required: true
+        type: string
 
 jobs:
   call-build-workflow:
@@ -78,7 +82,7 @@ jobs:
           github-generate-changelog: true
           java : Java 17
           game-versions: |
-            >=1.20
+            ${{ inputs.game_versions }}
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -95,7 +99,7 @@ jobs:
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |
-            >=1.20
+            ${{ inputs.game_versions }}
 
           modrinth-id: nOUYhAZV
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -113,7 +117,7 @@ jobs:
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |
-            >=1.20
+            ${{ inputs.game_versions }}
 
           curseforge-id: 847583
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
