@@ -5,11 +5,11 @@
   "refmap": "sherdsapi.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "DecoratedPotPatternsMixin",
     "accessor.ItemsToPotsAccessor"
   ],
   "client": [
-    "SheetsMixin"
+    "SheetsMixin",
+    "DecoratedPotPatternsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

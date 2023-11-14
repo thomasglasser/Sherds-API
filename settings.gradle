@@ -37,6 +37,10 @@ pluginManagement {
                 includeGroupAndSubgroups 'org.spongepowered'
             }
         }
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
         gradlePluginPortal()
     }
 }
