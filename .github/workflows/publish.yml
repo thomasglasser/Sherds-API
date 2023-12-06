@@ -95,7 +95,7 @@ jobs:
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.sherdsapi_env.outputs.mod_version }}+${{ matrix.loader }}
+          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |
@@ -113,7 +113,7 @@ jobs:
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.sherdsapi_env.outputs.mod_version }}+${{ matrix.loader }}
+          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |
