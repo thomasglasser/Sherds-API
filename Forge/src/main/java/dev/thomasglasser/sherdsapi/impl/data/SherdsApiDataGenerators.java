@@ -6,7 +6,7 @@ import dev.thomasglasser.sherdsapi.impl.Sherd;
 import dev.thomasglasser.sherdsapi.impl.SherdsApiSherds;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class SherdsApiDataGenerators
 {

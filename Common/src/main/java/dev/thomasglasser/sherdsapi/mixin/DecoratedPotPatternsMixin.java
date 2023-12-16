@@ -1,7 +1,7 @@
 package dev.thomasglasser.sherdsapi.mixin;
 
 import dev.thomasglasser.sherdsapi.impl.Sherd;
-import dev.thomasglasser.sherdsapi.impl.SherdsApiSherds;
+import dev.thomasglasser.sherdsapi.impl.SherdsApiRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -22,7 +22,7 @@ public class DecoratedPotPatternsMixin
 
 		if (cir.getReturnValue() == null && level != null)
 		{
-			for (Sherd sherd : SherdsApiSherds.SHERDS.get(level.registryAccess()))
+			for (Sherd sherd : level.registryAccess().registry(SherdsApiRegistries.SHERD).orElseThrow().stream().toList())
 			{
 				if (sherd.item() == item)
 					cir.setReturnValue(sherd.pattern());

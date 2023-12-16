@@ -20,9 +20,11 @@ loom {
 dependencies {
 
     minecraft "com.mojang:minecraft:${minecraft_version}"
+
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+//        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-1.20.2:${parchment_version}@zip")
     }
 
     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
@@ -40,6 +42,19 @@ publishing {
         maven {
             url "file://" + System.getenv("local_maven")
         }
+    }
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+        mod_name: mod_name,
+        resource_pack_format_number: resource_pack_format_number,
+        data_pack_format_number: data_pack_format_number
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['pack.mcmeta']) {
+        expand replaceProperties + [project: project]
     }
 }
 

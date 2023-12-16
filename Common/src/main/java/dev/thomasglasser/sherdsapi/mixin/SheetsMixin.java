@@ -1,7 +1,7 @@
 package dev.thomasglasser.sherdsapi.mixin;
 
 import dev.thomasglasser.sherdsapi.impl.Sherd;
-import dev.thomasglasser.sherdsapi.impl.SherdsApiSherds;
+import dev.thomasglasser.sherdsapi.impl.SherdsApiRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
@@ -29,7 +29,7 @@ public abstract class SheetsMixin
 		final Level level = Minecraft.getInstance().level;
 		if (level != null)
 		{
-			for (Sherd sherd : SherdsApiSherds.SHERDS.get(level.registryAccess()))
+			for (Sherd sherd : level.registryAccess().registry(SherdsApiRegistries.SHERD).orElseThrow().stream().toList())
 			{
 				if (sherd.pattern() == resourceKey)
 				{

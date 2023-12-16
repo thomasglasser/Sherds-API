@@ -1,18 +1,21 @@
 package dev.thomasglasser.sherdsapi;
 
+import dev.thomasglasser.sherdsapi.impl.SherdsApiForgeEvents;
 import dev.thomasglasser.sherdsapi.impl.data.SherdsApiDataGenerators;
-import dev.thomasglasser.sherdsapi.platform.ForgePlatformHelper;
-import dev.thomasglasser.sherdsapi.platform.Services;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
 
 @Mod(SherdsApi.MOD_ID)
 public class SherdsApiForge {
     public SherdsApiForge() {
         SherdsApi.init();
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(((ForgePlatformHelper)Services.PLATFORM)::onRegister);
-
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(SherdsApiDataGenerators::gatherData);
+        IEventBus modBus = ModLoadingContext.get().getActiveContainer().getEventBus();
+        if (modBus != null)
+        {
+            modBus.addListener(SherdsApiDataGenerators::gatherData);
+            modBus.addListener(SherdsApiForgeEvents::onNewDatapackRegistry);
+        }
     }
 }
