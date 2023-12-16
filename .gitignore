@@ -22,3 +22,4 @@ build
 eclipse
 run
 /Common/src/generated/resources/.cache/
+/Forge/runs/

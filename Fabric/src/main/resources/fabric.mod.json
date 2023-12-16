@@ -22,10 +22,10 @@
       ]
     },
     "mixins": [
-      "sherdsapi.mixins.json"
+      "${mod_id}.mixins.json"
     ],
 
-  "accessWidener" : "sherdsapi.accesswidener",
+  "accessWidener" : "${mod_id}.accesswidener",
 
   "depends": {
       "fabricloader": ">=${fabric_loader_version}",

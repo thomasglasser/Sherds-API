@@ -45,6 +45,8 @@ publishing {
     }
 }
 
+sourceSets.main.resources.srcDir './src/generated/resources'
+
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
         mod_name: mod_name,
