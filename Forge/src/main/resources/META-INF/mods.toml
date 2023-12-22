@@ -48,14 +48,14 @@ loaders = ['neoforge']
 [[dependencies.${mod_id}]] #optional
 # the modid of the dependency
 modId="neoforge" #mandatory
-mandatory=true #mandatory
+type="required" #mandatory
 versionRange="[${neoforge_version},)" #mandatory
 ordering="NONE"
 side="BOTH"
 # Here's another dependency
 [[dependencies.${mod_id}]]
 modId="minecraft"
-mandatory=true
+type="required"
 versionRange="[${minecraft_version},${next_minecraft_version})"
 ordering="NONE"
 side="BOTH"
