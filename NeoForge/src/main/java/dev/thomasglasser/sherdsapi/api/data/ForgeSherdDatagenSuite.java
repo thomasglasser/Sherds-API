@@ -16,10 +16,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * ForgeSherdDatagenSuite is a class that represents a suite of sherd data generation for Forge mods.
+ * It extends the BaseSherdDatagenSuite class.
+ */
 public class ForgeSherdDatagenSuite extends BaseSherdDatagenSuite
 {
+	/**
+	 * Variable registries represents a CompletableFuture object that holds a Provider of HolderLookup.
+	 * This variable is private and final, indicating that it cannot be changed once assigned.
+	 */
 	private final CompletableFuture<HolderLookup.Provider> registries;
 
+	/**
+	 * Constructor for ForgeSherdDatagenSuite.
+	 * @param event The GatherDataEvent object that is passed in from the data generation event.
+	 * @param modid The modid of the mod that is being generated for.
+	 */
 	public ForgeSherdDatagenSuite(GatherDataEvent event, final String modid)
 	{
 		super(modid);
@@ -32,7 +45,7 @@ public class ForgeSherdDatagenSuite extends BaseSherdDatagenSuite
 			public String getName()
 			{
 				String var10000 = super.getName();
-				return "SherdDatagenSuite / " + var10000 + " " + modid;
+				return "SherdDatagenSuite / " + var10000;
 			}
 		};
 
@@ -55,7 +68,7 @@ public class ForgeSherdDatagenSuite extends BaseSherdDatagenSuite
 			public String getName()
 			{
 				String var10000 = super.getName();
-				return "SherdDatagenSuite / " + var10000 + " " + modid;
+				return "SherdDatagenSuite / " + var10000;
 			}
 
 			@Override

@@ -11,6 +11,6 @@ public class SherdsApiFabric implements ModInitializer {
     public void onInitialize() {
         SherdsApi.init();
 
-        DynamicRegistries.registerSynced(SherdsApiRegistries.SHERD, Sherd.CODEC, Sherd.CODEC, DynamicRegistries.SyncOption.SKIP_WHEN_EMPTY);
+        DynamicRegistries.registerSynced(SherdsApiRegistries.SHERD, Sherd.CODEC, Sherd.CODEC);
     }
 }
