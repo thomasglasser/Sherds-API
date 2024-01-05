@@ -35,7 +35,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        loader: [ Common, Forge, Fabric ]
+        loader: [ Common, NeoForge, Fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
@@ -71,8 +71,8 @@ jobs:
           files: |
             Common/build/libs/!(*-@(dev|sources|javadoc)).jar
             Common/build/libs/*-@(dev|sources|javadocs).jar
-            Forge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            Forge/build/libs/*-@(dev|sources|javadocs).jar
+            NeoForge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            NeoForge/build/libs/*-@(dev|sources|javadocs).jar
             Fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             Fabric/build/libs/*-@(dev|sources|javadocs).jar
           name : ${{ inputs.title }}
