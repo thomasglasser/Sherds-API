@@ -52,18 +52,6 @@ publishing {
 
 sourceSets.main.resources.srcDir './src/generated/resources'
 
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-        mod_name: mod_name,
-        resource_pack_format_number: resource_pack_format_number,
-        data_pack_format_number: data_pack_format_number
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['pack.mcmeta']) {
-        expand replaceProperties + [project: project]
-    }
-}
 
 /*
 Generates a new common artifact in intermediary mappings.

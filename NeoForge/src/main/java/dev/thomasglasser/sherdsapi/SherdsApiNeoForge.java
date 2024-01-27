@@ -7,8 +7,9 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
 @Mod(SherdsApi.MOD_ID)
-public class SherdsApiForge {
-    public SherdsApiForge() {
+public class SherdsApiNeoForge
+{
+    public SherdsApiNeoForge() {
         SherdsApi.init();
 
         IEventBus modBus = ModLoadingContext.get().getActiveContainer().getEventBus();

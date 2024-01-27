@@ -4,17 +4,17 @@
   "version": "${version}",
 
   "name": "${mod_name}",
-  "description": "Makes adding new pottery shards easier",
+  "description": "${description}",
   "authors": [
     "${mod_author}"
   ],
   "contact": {
-    "homepage": "https://github.com/thomasglasser/Sherds-API/wiki",
-    "sources": "https://github.com/thomasglasser/Sherds-API"
+    "homepage": "${homepage}",
+    "sources": "${sources}"
   },
 
-  "license": "All Rights Reserved",
-  "icon": "api.png",
+  "license": "${license}",
+  "icon": "${icon}",
   "environment": "*",
     "entrypoints": {
       "main": [

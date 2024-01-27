@@ -44,48 +44,14 @@ subprojects {
             }
         }
         maven {
-            name = "Modrinth"
-            url = "https://api.modrinth.com/maven"
-            content {
-                includeGroupAndSubgroups 'maven.modrinth'
-            }
-        }
-        maven {
-            name = "CurseMaven"
-            url "https://cursemaven.com"
-            content {
-                includeGroupAndSubgroups 'curse.maven'
-            }
-        }
-
-        maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
             content {
                 includeGroupAndSubgroups 'net.fabricmc.fabric-api'
             }
         }
-        maven {
-            name = "JEI"
-            url = "https://maven.blamejared.com/"
-            content {
-                includeGroupAndSubgroups 'mezz.jei'
-            }
-        }
-        maven {
-            name = "Spruce UI"
-            url 'https://maven.gegy.dev'
-            content {
-                includeGroupAndSubgroups 'dev.lambdaurora'
-            }
-        }
-        maven {
-            name = "Mod Menu"
-            url 'https://maven.terraformersmc.com/releases'
-            content {
-                includeGroupAndSubgroups 'com.terraformersmc'
-            }
-        }
+
+        // Non-specific
         maven {
             name = 'NeoForged'
             url = 'https://maven.neoforged.net/releases'
@@ -93,6 +59,33 @@ subprojects {
         maven {
             name = 'Mojang and Mixins'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+
+    processResources {
+        var replaceProperties = [
+                mod_name: mod_name,
+                resource_pack_format_number: resource_pack_format_number,
+                data_pack_format_number: data_pack_format_number,
+                mod_id: mod_id,
+                major_fml_version: major_fml_version,
+                version: project.version,
+                description: description,
+                mod_author: mod_author,
+                homepage: homepage,
+                sources: sources,
+                license: license,
+                icon: icon,
+                neoforge_version: neoforge_version,
+                fabric_loader_version: fabric_loader_version,
+                fabric_version: fabric_version,
+                minecraft_version: minecraft_version,
+                next_minecraft_version: next_minecraft_version
+        ]
+        inputs.properties replaceProperties
+
+        filesMatching(['META-INF/mods.toml','fabric.mod.json','pack.mcmeta','*.mixins.json']) {
+            expand replaceProperties + [project: project]
         }
     }
 

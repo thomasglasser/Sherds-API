@@ -57,28 +57,6 @@ dependencies {
     implementation project(":Common")
 }
 
-tasks.withType(ProcessResources).configureEach {
-    from project(":Common").sourceSets.main.resources
-    var replaceProperties = [
-            mod_name                   : mod_name,
-            resource_pack_format_number: resource_pack_format_number,
-            data_pack_format_number    : data_pack_format_number,
-            major_fml_version          : major_fml_version,
-            mod_id                     : mod_id,
-            version                    : project.version,
-            mod_author                 : mod_author,
-            neoforge_version           : neoforge_version,
-            minecraft_version          : minecraft_version,
-            next_minecraft_version     : next_minecraft_version
-
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml','pack.mcmeta']) {
-        expand replaceProperties + [project: project]
-    }
-}
-
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
 Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
 
