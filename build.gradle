@@ -50,6 +50,28 @@ subprojects {
                 includeGroupAndSubgroups 'net.fabricmc.fabric-api'
             }
         }
+        maven {
+            name = "Cloth Config"
+            url "https://maven.shedaniel.me/"
+            content {
+                includeGroupAndSubgroups 'me.shedaniel'
+                includeGroupAndSubgroups 'dev.architectury'
+            }
+        }
+        maven {
+            name = "Mod Menu"
+            url 'https://maven.terraformersmc.com/releases'
+            content {
+                includeGroupAndSubgroups 'com.terraformersmc'
+            }
+        }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+            content {
+                includeGroupAndSubgroups 'maven.modrinth'
+            }
+        }
 
         // Non-specific
         maven {
@@ -70,10 +92,11 @@ subprojects {
                 mod_id: mod_id,
                 major_fml_version: major_fml_version,
                 version: project.version,
-                description: description,
+                description: project.description,
                 mod_author: mod_author,
                 homepage: homepage,
                 sources: sources,
+                issues: issues,
                 license: license,
                 icon: icon,
                 neoforge_version: neoforge_version,

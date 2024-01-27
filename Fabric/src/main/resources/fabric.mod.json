@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "${homepage}",
-    "sources": "${sources}"
+    "sources": "${sources}",
+    "issues": "${issues}"
   },
 
   "license": "${license}",
