@@ -52,14 +52,21 @@ runs {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+jarJar.enable()
+
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
     implementation project(":Common")
 
+    implementation "dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}"
+
     // Runtime
 //    runtimeOnly "maven.modrinth:jade:${jade_version}-neoforge"
-    runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
-    runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
+//    runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+//    runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
+
+    // JarJar
+    jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})")
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
@@ -80,6 +87,20 @@ tasks.named("sourcesJar", Jar) {
 tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
     from project(":Common").sourceSets.main.resources
 }
+
+tasks.named('jarJar') {
+    archiveClassifier = ''
+}
+
+
+// Needed for when JiJ is enabled
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            jarJar.component(it)
+//        }
+//    }
+//}
 
 publishing {
     publications {

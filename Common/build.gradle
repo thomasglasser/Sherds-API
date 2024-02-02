@@ -29,6 +29,8 @@ dependencies {
 
     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
+    modImplementation "dev.thomasglasser.tommylib:tommylib-common-${minecraft_version}:${tommylib_version}"
 }
 
 import net.fabricmc.loom.task.AbstractRemapJarTask
