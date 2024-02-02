@@ -66,7 +66,9 @@ dependencies {
 //    runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
 
     // JarJar
-    jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})")
+    jarJar(group: "dev.thomasglasser.tommylib", name: "tommylib-neoforge-${minecraft_version}", version: "[${tommylib_version},${tommylib_next_major_version})") {
+        transitive = false
+    }
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
@@ -90,6 +92,10 @@ tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
 
 tasks.named('jarJar') {
     archiveClassifier = ''
+}
+
+jar {
+    archiveClassifier = 'slim'
 }
 
 
