@@ -58,7 +58,9 @@ dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
     implementation project(":Common")
 
-    implementation "dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}"
+    implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}") {
+        transitive = false
+    }
 
     // Runtime
 //    runtimeOnly "maven.modrinth:jade:${jade_version}-neoforge"
