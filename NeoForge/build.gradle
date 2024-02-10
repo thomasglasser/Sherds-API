@@ -91,11 +91,3 @@ tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
 tasks.named('jarJar') {
     archiveClassifier = ''
 }
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            jarJar.component(it)
-        }
-    }
-}
