@@ -35,6 +35,6 @@ jobs:
           name: Sherds API
           if-no-files-found: error
           path: |
-            Fabric/build/libs
-            NeoForge/build/libs
-            Common/build/libs
+            fabric/build/libs
+            neoforge/build/libs
+            common/build/libs

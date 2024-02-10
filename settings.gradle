@@ -30,4 +30,4 @@ pluginManagement {
 }
 
 rootProject.name = 'Sherds API'
-include("Common", "Fabric", "NeoForge")
+include("common", "fabric", "neoforge")

@@ -8,10 +8,13 @@
   "authors": [
     "${mod_author}"
   ],
+  "contributors": [
+    "${contributors}"
+  ],
   "contact": {
-    "homepage": "${homepage}",
-    "sources": "${sources}",
-    "issues": "${issues}"
+    "homepage": "https://github.com/thomasglasser/${github_name}/wiki",
+    "sources": "https://github.com/thomasglasser/${github_name}",
+    "issues": "https://github.com/thomasglasser/${github_name}/issues"
   },
 
   "license": "${license}",
@@ -29,15 +32,14 @@
   "accessWidener" : "${mod_id}.accesswidener",
 
   "depends": {
-      "fabricloader": ">=${fabric_loader_version}",
-      "fabric-api": ">=${fabric_version}",
-      "minecraft": ">=${minecraft_version}",
-      "java": ">=17"
-    },
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_version}",
+    "minecraft": ">=${minecraft_version}",
+    "java": ">=17"
+  },
   "custom": {
     "mc-publish": {
       "loaders": ["fabric", "quilt"]
     }
   }
 }
-  

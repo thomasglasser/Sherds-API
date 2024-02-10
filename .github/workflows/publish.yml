@@ -35,19 +35,19 @@ jobs:
       contents: write
     strategy:
       matrix:
-        loader: [ Common, NeoForge, Fabric ]
+        loader: [ common, neoforge, fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
     steps:
-      - name: Download sherdsapi artifact
+      - name: Download mod artifact
         uses: actions/download-artifact@v3
         continue-on-error: true
         with:
           name: Sherds API
 
       - name: Checking and setting the environment
-        id: sherdsapi_env
+        id: mod_env
         continue-on-error: true
         run: |
           export loader=${{ matrix.loader }}
@@ -66,19 +66,19 @@ jobs:
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if : (matrix.website == 'github_release' && matrix.loader == 'Fabric')
+        if : (matrix.website == 'github_release' && matrix.loader == 'Common')
         with:
           files: |
-            Common/build/libs/!(*-@(dev|sources|javadoc)).jar
-            Common/build/libs/*-@(dev|sources|javadocs).jar
-            NeoForge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            NeoForge/build/libs/*-@(dev|sources|javadocs).jar
-            Fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-            Fabric/build/libs/*-@(dev|sources|javadocs).jar
+            common/build/libs/!(*-@(dev|sources|javadoc)).jar
+            common/build/libs/*-@(dev|sources|javadocs).jar
+            neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            neoforge/build/libs/*-@(dev|sources|javadocs).jar
+            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            fabric/build/libs/*-@(dev|sources|javadocs).jar
           name : ${{ inputs.title }}
-          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
-          github-tag: ${{ steps.sherdsapi_env.outputs.mod_version }}
+          github-tag: ${{ steps.mod_env.outputs.mod_version }}
           github-generate-changelog: true
           java : Java 17
           game-versions: |
@@ -89,13 +89,13 @@ jobs:
       - name: Publish Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if : (matrix.website == 'modrinth' && matrix.loader != 'Common')
+        if : (matrix.website == 'modrinth' && matrix.loader != 'common')
         with:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |
@@ -107,13 +107,13 @@ jobs:
       - name: Publish Curseforge Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if: (matrix.website == 'curseforge' && matrix.loader != 'Common')
+        if: (matrix.website == 'curseforge' && matrix.loader != 'common')
         with:
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
           name: ${{ inputs.title }}
-          version: ${{ steps.sherdsapi_env.outputs.mod_version }}
+          version: ${{ steps.mod_env.outputs.mod_version }}
           changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           java: Java 17
           game-versions: |

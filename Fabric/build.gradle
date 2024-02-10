@@ -1,10 +1,7 @@
 plugins {
     id 'fabric-loom' version "${loom_version}"
-    id 'maven-publish'
     id 'idea'
 }
-
-archivesBaseName = "${mod_id}-fabric-${minecraft_version}"
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -18,7 +15,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":Common")
+    implementation project(":common")
 
     include modImplementation("dev.thomasglasser.tommylib:tommylib-fabric-${minecraft_version}:${tommylib_version}") {
         transitive = false
@@ -34,6 +31,11 @@ dependencies {
 }
 
 loom {
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        // Must specify "accesswidener" field in fabric.mod.json
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
+    }
+
     runs {
         client {
             client()
@@ -52,31 +54,12 @@ loom {
     mixin {
         add sourceSets.main, "${mod_id}.refmap.json"
     }
-
-    accessWidenerPath = project(":Common").file("src/main/resources/${mod_id}.accesswidener")
 }
 
 tasks.withType(ProcessResources).configureEach {
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project(":Common").sourceSets.main.allSource)
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-    }
+    source(project(":common").sourceSets.main.allSource)
 }
