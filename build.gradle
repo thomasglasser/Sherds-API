@@ -162,7 +162,7 @@ subprojects {
                             {
                                 connection = "scm:git:git://github.com/thomasglasser/${github_name}.git"
                                 developerConnection = "scm:git:ssh://github.com:thomasglasser/${github_name}.git"
-                                url = "http://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
+                                url = "https://github.com/thomasglasser/${github_name}/tree/${minecraft_version}"
                             }
                 }
             }
