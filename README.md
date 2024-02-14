@@ -7,6 +7,7 @@ The new pottery sherds are a nice feature, but they're a pain to add since they'
 [![Available on Github](https://rawcdn.githack.com/intergrav/devins-badges/1aec26abb75544baec37249f42008b2fcc0e731f/assets/cozy/available/github_vector.svg)](https://github.com/thomasglasser/Sherds-API)
 [![Available on Modrinth](https://rawcdn.githack.com/intergrav/devins-badges/1aec26abb75544baec37249f42008b2fcc0e731f/assets/cozy/available/modrinth_vector.svg)](https://modrinth.com/mod/sherdsapi)
 [![Available on Curseforge](https://rawcdn.githack.com/intergrav/devins-badges/1aec26abb75544baec37249f42008b2fcc0e731f/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/mc-mods/sherdsapi)
+[![Available on Maven Central](https://rawcdn.githack.com/intergrav/devins-badges/2dc967fc44dc73850eee42c133a55c8ffc5e30cb/assets/cozy/available/maven-central_vector.svg)](https://central.sonatype.com/namespace/dev.thomasglasser.sherdsapi)
 
 [![Supported on NeoForge](https://rawcdn.githack.com/thomasglasser/thomasglasser/1f85027a20670b89b94462ddd345af897b47ac17/files/badges/cozy/supported/neoforge_vector.svg)](https://modrinth.com/mod/sherdsapi/versions?l=neoforge)
 [![Supported on Fabric](https://rawcdn.githack.com/intergrav/devins-badges/1aec26abb75544baec37249f42008b2fcc0e731f/assets/cozy/supported/fabric_vector.svg)](https://modrinth.com/mod/sherdsapi/versions?l=fabric)
