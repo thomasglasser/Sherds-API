@@ -7,6 +7,10 @@ permissions:
 
 jobs:
   build:
+    env:
+      usr: ${{ secrets.USR }}
+      pwd: ${{ secrets.PWD }}
+
     runs-on: ubuntu-latest
 
     steps:
