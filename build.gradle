@@ -171,8 +171,8 @@ subprojects {
         repositories {
             maven {
                 credentials {
-                    username = "$usr"
-                    password = "$pwd"
+                    username = project.findProperty("MAVEN_USER") ?: System.getenv("MAVEN_USER")
+                    password = project.findProperty("MAVEN_PASSWORD") ?: System.getenv("MAVEN_PASSWORD")
                 }
 
                 url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
