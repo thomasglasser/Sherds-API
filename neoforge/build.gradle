@@ -9,8 +9,7 @@ subsystems {
         // The Minecraft version for which the Parchment mappings were created.
         // This does not necessarily need to match the Minecraft version your mod targets
         // Defaults to the value of Gradle property neogradle.subsystems.parchment.minecraftVersion
-        minecraftVersion = "1.20.3"
-//        minecraftVersion = minecraft_version
+        minecraftVersion = minecraft_version
 
         // The version of Parchment mappings to apply.
         // See https://parchmentmc.org/docs/getting-started for a list.
