@@ -35,7 +35,8 @@
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_version}",
     "minecraft": ">=${minecraft_version}",
-    "java": ">=17"
+    "java": ">=17",
+    "tommylib": "${tommylib_version}"
   },
   "custom": {
     "mc-publish": {

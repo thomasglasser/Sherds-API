@@ -103,12 +103,13 @@ subprojects {
                 contributors: contributors,
                 license: license,
                 icon: icon,
+                github_name: github_name,
                 neoforge_version: neoforge_version,
                 fabric_loader_version: fabric_loader_version,
                 fabric_version: fabric_version,
                 minecraft_version: minecraft_version,
                 next_minecraft_version: next_minecraft_version,
-                github_name: github_name
+                tommylib_version: tommylib_version
         ]
         inputs.properties replaceProperties
 
