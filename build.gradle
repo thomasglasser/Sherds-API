@@ -78,6 +78,13 @@ subprojects {
                 includeGroupAndSubgroups 'maven.modrinth'
             }
         }
+        maven {
+            name = "Mixin Extras"
+            url = "https://jitpack.io/"
+            content {
+                includeGroupAndSubgroups 'com.github.llamalad7.mixinextras'
+            }
+        }
 
         // Non-specific
         maven {
@@ -113,7 +120,7 @@ subprojects {
         ]
         inputs.properties replaceProperties
 
-        filesMatching(['META-INF/mods.toml','fabric.mod.json','pack.mcmeta','*.mixins.json']) {
+        filesMatching(['META-INF/mods.toml','fabric.mod.json','**/pack.mcmeta','*.mixins.json']) {
             expand replaceProperties + [project: project]
         }
     }
