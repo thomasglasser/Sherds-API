@@ -22,7 +22,7 @@ dependencies {
     }
 
     compileOnly group:'net.fabricmc', name:'sponge-mixin', version:mixin_version
-    implementation "com.github.llamalad7.mixinextras:mixinextras-fabric:${mixinextras_version}"
+    implementation "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     modImplementation("dev.thomasglasser.tommylib:tommylib-common-${minecraft_version}:${tommylib_version}") {

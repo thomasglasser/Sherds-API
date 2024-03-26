@@ -78,13 +78,6 @@ subprojects {
                 includeGroupAndSubgroups 'maven.modrinth'
             }
         }
-        maven {
-            name = "Mixin Extras"
-            url = "https://jitpack.io/"
-            content {
-                includeGroupAndSubgroups 'com.github.llamalad7.mixinextras'
-            }
-        }
 
         // Non-specific
         maven {
