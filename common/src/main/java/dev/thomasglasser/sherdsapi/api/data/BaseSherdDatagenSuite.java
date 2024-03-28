@@ -2,7 +2,9 @@ package dev.thomasglasser.sherdsapi.api.data;
 
 import com.mojang.datafixers.util.Pair;
 import dev.thomasglasser.sherdsapi.impl.Sherd;
+import dev.thomasglasser.sherdsapi.impl.SherdsApiRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +58,15 @@ public abstract class BaseSherdDatagenSuite
 	{
 		sherds.add(Pair.of(key, sherd));
 		return this;
+	}
+
+	/**
+	 * Creates a resource key for a sherd with the given path.
+	 * @param path The path of the sherd.
+	 * @return The resource key of the sherd.
+	 */
+	protected ResourceKey<Sherd> key(String path)
+	{
+		return SherdsApiRegistries.sherdKey(new ResourceLocation(modId, path));
 	}
 }
