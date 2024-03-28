@@ -1,10 +1,12 @@
 {
   "replace": false,
   "values": [
-    "minecraft:barrier",
+    "minecraft:light",
     {
       "id": "#minecraft:music_discs",
       "required": false
-    }
+    },
+    "minecraft:sheaf_pottery_sherd",
+    "minecraft:shelter_pottery_sherd"
   ]
 }
