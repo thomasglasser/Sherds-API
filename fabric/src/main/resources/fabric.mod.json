@@ -23,6 +23,9 @@
     "entrypoints": {
       "main": [
         "dev.thomasglasser.sherdsapi.SherdsApiFabric"
+      ],
+      "fabric-datagen": [
+        "dev.thomasglasser.sherdsapi.example.ExampleFabricDataGenerator"
       ]
     },
     "mixins": [

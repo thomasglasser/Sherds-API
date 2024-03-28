@@ -1,0 +1,10 @@
+{
+  "ingredient": [
+    {
+      "item": "minecraft:structure_block"
+    },
+    {
+      "item": "minecraft:structure_void"
+    }
+  ]
+}

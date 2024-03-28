@@ -41,11 +41,12 @@ runs {
     }
 
     data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('../common/src/generated/resources/').getAbsolutePath(), '--existing', file('../common/src/main/resources/').getAbsolutePath()
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+// Must be enabled for datagen resources to load, disabled for example purposes
+//sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 jarJar.enable()
 def jarJarRangeAttribute = Attribute.of("jarJarRange", String.class);

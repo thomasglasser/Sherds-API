@@ -2,7 +2,7 @@ package dev.thomasglasser.sherdsapi.impl;
 
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
-public class SherdsApiForgeEvents
+public class SherdsApiNeoForgeEvents
 {
 	public static void onNewDatapackRegistry(DataPackRegistryEvent.NewRegistry event)
 	{

@@ -5,11 +5,11 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "accessor.ItemsToPotsAccessor"
+    "dev.thomasglasser.sherdsapi.impl.mixin.accessor.ItemsToPotsAccessor"
   ],
   "client": [
-    "SheetsMixin",
-    "DecoratedPotPatternsMixin"
+    "dev.thomasglasser.sherdsapi.impl.mixin.SheetsMixin",
+    "dev.thomasglasser.sherdsapi.impl.mixin.DecoratedPotPatternsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

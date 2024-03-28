@@ -21,3 +21,7 @@ accessible field net/minecraft/world/level/block/entity/DecoratedPotPatterns SHE
 accessible field net/minecraft/world/level/block/entity/DecoratedPotPatterns SHELTER Lnet/minecraft/resources/ResourceKey;
 accessible field net/minecraft/world/level/block/entity/DecoratedPotPatterns SNORT Lnet/minecraft/resources/ResourceKey;
 accessible field net/minecraft/world/level/block/entity/DecoratedPotPatterns ANGLER Lnet/minecraft/resources/ResourceKey;
+accessible class net/minecraft/data/tags/IntrinsicHolderTagsProvider$IntrinsicTagAppender
+accessible field net/minecraft/world/item/crafting/Ingredient values [Lnet/minecraft/world/item/crafting/Ingredient$Value;
+accessible class net/minecraft/world/item/crafting/Ingredient$TagValue
+accessible method net/minecraft/world/item/crafting/Ingredient$Value getItems ()Ljava/util/Collection;
