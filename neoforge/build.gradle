@@ -71,11 +71,9 @@ configurations {
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
-    implementation project(":common")
+    compileOnly project(":common")
 
-    include implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}") {
-        transitive = false
-    }
+    include implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
     // Runtime
 //    runtimeOnly "maven.modrinth:jade:${jade_version}-neoforge"
@@ -104,4 +102,11 @@ tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
 
 tasks.named('jarJar') {
     archiveClassifier = ''
+}
+
+configurations.runtimeElements.artifacts.clear()
+artifacts {
+    runtimeElements(tasks.jarJar) {
+        builtBy tasks.jarJar
+    }
 }
