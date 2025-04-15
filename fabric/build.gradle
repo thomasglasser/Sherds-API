@@ -56,3 +56,5 @@ loom {
 		add sourceSets.main, "${mod_id}.refmap.json"
 	}
 }
+
+compileJava.finalizedBy(tasks.validateAccessWidener)
