@@ -35,13 +35,14 @@ jobs:
       contents: write
     strategy:
       matrix:
+        loader: [ common, neoforge, fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
     steps:
       - name: Download mod artifact
         uses: actions/download-artifact@v4
-        continue-on-error: true
+        continue-on-error: false
         with:
           name: Sherds API
 
