@@ -2,9 +2,6 @@ plugins {
     id 'sherdsapi-common'
 }
 
-// Includes datagenned resources at runtime, disabled for example purposes
-//sourceSets.main.resources.srcDir './src/generated/resources'
-
 configurations {
     commonJava {
         canBeResolved = true

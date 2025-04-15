@@ -23,6 +23,7 @@
       "dev.thomasglasser.sherdsapi.SherdsApiFabric"
     ],
     "client": [
+      "dev.thomasglasser.sherdsapi.impl.client.SherdsApiFabricClient"
     ],
     "fabric-datagen": [
     ]

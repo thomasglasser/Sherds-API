@@ -1,5 +1,7 @@
+import javax.inject.Inject
+
 plugins {
-	id 'sherdsapi-common'
+	id "sherdsapi-common"
 	id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
@@ -13,12 +15,14 @@ neoForge {
 	}
 }
 
+sourceSets.main.resources.srcDir project(":common").file('./src/generated/resources')
+
 @CacheableRule
 abstract class MakeLibraryLenient implements ComponentMetadataRule {
 	final String targetGroup
 	final Set<String> targetModule
 
-	@javax.inject.Inject MakeLibraryLenient(String targetGroup, Collection<String> targetModule) {
+	@Inject MakeLibraryLenient(String targetGroup, Collection<String> targetModule) {
 		this.targetGroup = targetGroup
 		this.targetModule = Set.copyOf(targetModule)
 	}
@@ -41,7 +45,7 @@ abstract class MakeLibraryLenient implements ComponentMetadataRule {
 
 dependencies {
 	compileOnly group:'net.fabricmc', name:'sponge-mixin', version:mixin_version
-	implementation "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
+	compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
 	components {
 		withModule("net.neoforged:minecraft-dependencies", MakeLibraryLenient) {
 			params("org.ow2.asm", ["asm", "asm-tree", "asm-commons", "asm-util"])

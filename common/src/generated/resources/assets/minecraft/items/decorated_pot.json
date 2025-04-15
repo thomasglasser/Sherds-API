@@ -1,0 +1,21 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "sherdsapi:stack_pot_decorations",
+    "on_false": {
+      "type": "minecraft:special",
+      "base": "minecraft:item/decorated_pot",
+      "model": {
+        "type": "minecraft:decorated_pot"
+      }
+    },
+    "on_true": {
+      "type": "minecraft:special",
+      "base": "minecraft:item/decorated_pot",
+      "model": {
+        "type": "sherdsapi:decorated_pot"
+      }
+    },
+    "property": "minecraft:has_component"
+  }
+}

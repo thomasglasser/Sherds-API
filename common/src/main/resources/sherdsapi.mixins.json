@@ -7,7 +7,8 @@
   "mixins": [
     "DecoratedPotBlockEntityMixin",
     "DecoratedPotBlockMixin",
-    "DecoratedPotRecipeMixin"
+    "DecoratedPotRecipeMixin",
+    "ItemStackMixin"
   ],
   "client": [
     "DecoratedPotRendererMixin"

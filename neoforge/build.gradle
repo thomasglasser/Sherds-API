@@ -1,5 +1,5 @@
 plugins {
-	id 'sherdsapi-loader'
+	id "sherdsapi-loader"
 	id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
@@ -11,12 +11,15 @@ neoForge {
 		mappingsVersion = parchment_version
 	}
 
-	def at = '../common/src/main/resources/META-INF/accesstransformer.cfg'
+	def at = rootProject.project(":common").file('src/main/resources/META-INF/accesstransformer.cfg')
 	if (file(at).exists()) {
 		accessTransformers = [at]
 	}
 
 	runs {
+		configureEach {
+			systemProperties.put('terminal.ansi', 'true')
+		}
 		client {
 			client()
 			ideName = "NeoForge Client"
@@ -34,10 +37,10 @@ neoForge {
 			gameDirectory = project.layout.projectDirectory.dir('runs/server')
 		}
 		data {
-			data()
+			clientData()
 			ideName = "NeoForge Data Generation"
 			gameDirectory = project.layout.projectDirectory.dir('runs/data')
-			programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			programArguments.addAll '--mod', project.mod_id, '--all', '--output', rootProject.project(":common").file('src/generated/resources/').getAbsolutePath(), '--existing', rootProject.project(":common").file('src/main/resources/').getAbsolutePath()
 		}
 	}
 
