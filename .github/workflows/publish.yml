@@ -35,13 +35,12 @@ jobs:
       contents: write
     strategy:
       matrix:
-        loader: [ common, neoforge, fabric ]
         website: [ modrinth, curseforge, github_release ]
     name: ${{ matrix.website }} (${{ matrix.loader }})
 
     steps:
       - name: Download mod artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: Sherds API
@@ -101,7 +100,7 @@ jobs:
           game-versions: |
             ${{ inputs.game_versions }}
 
-          modrinth-id: nOUYhAZV
+          modrinth-id: sherdsapi
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
       - name: Publish Curseforge Release
