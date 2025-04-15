@@ -61,7 +61,6 @@ jobs:
           echo "loader_name=$loader_name" >> $GITHUB_OUTPUT
           echo "mc_version=$mc_version" >> $GITHUB_OUTPUT
           echo "mod_version=$mod_version" >> $GITHUB_OUTPUT
-          rm ${loader}/build/libs/*shadow.jar
 
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
