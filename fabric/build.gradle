@@ -54,7 +54,8 @@ loom {
 
 	mixin {
 		add sourceSets.main, "${mod_id}.refmap.json"
+		useLegacyMixinAp = false
 	}
 }
 
-compileJava.finalizedBy(tasks.validateAccessWidener)
+build.dependsOn validateAccessWidener

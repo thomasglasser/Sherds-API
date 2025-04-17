@@ -7,9 +7,6 @@
   "authors": [
     "${mod_author}"
   ],
-  "contributors": [
-    "${contributors}"
-  ],
   "contact": {
     "homepage": "https://github.com/thomasglasser/${github_name}/wiki",
     "sources": "https://github.com/thomasglasser/${github_name}",
