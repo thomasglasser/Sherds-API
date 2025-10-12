@@ -58,4 +58,4 @@ loom {
 	}
 }
 
-build.dependsOn validateAccessWidener
+compileJava.dependsOn validateAccessWidener
