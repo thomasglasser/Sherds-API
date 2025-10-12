@@ -22,7 +22,7 @@ public class SherdsApiModelProvider extends ExtendedModelProvider {
     protected void registerModels(BlockModelGenerators blockModelGenerators, ItemModelGenerators itemModelGenerators) {
         itemModelGenerators.itemModelOutput.accept(Items.DECORATED_POT, ItemModelUtils.conditional(
                 new HasComponent(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), false),
-                ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(Items.DECORATED_POT), StackSensitiveDecoratedPotSpecialRenderer.Unbaked.INSTANCE),
+                ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(Items.DECORATED_POT), new StackSensitiveDecoratedPotSpecialRenderer.Unbaked()),
                 ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(Items.DECORATED_POT), new DecoratedPotSpecialRenderer.Unbaked())));
     }
 }
