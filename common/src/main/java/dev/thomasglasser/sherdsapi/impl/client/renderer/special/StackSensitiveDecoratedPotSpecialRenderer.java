@@ -5,14 +5,14 @@ import com.mojang.serialization.MapCodec;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorations;
 import dev.thomasglasser.sherdsapi.impl.StackPotRenderer;
-import java.util.Set;
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 public class StackSensitiveDecoratedPotSpecialRenderer implements SpecialModelRenderer<StackPotDecorations> {
     private final StackPotRenderer stackPotRenderer;
@@ -30,8 +30,8 @@ public class StackSensitiveDecoratedPotSpecialRenderer implements SpecialModelRe
         this.stackPotRenderer.sherdsapi$submit(poseStack, nodeCollector, packedLight, packedOverlay, argument, outlineColor);
     }
 
-    public void getExtents(Set<Vector3f> output) {
-        this.stackPotRenderer.getExtents(output);
+    public void getExtents(Consumer<Vector3fc> consumer) {
+        this.stackPotRenderer.getExtents(consumer);
     }
 
     public record Unbaked() implements SpecialModelRenderer.Unbaked {

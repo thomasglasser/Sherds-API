@@ -1,12 +1,12 @@
 package dev.thomasglasser.sherdsapi.impl;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import java.util.Set;
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 public interface StackPotRenderer {
     void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, StackPotDecorations decorations, int outlineColor);
 
-    void getExtents(Set<Vector3f> output);
+    void getExtents(Consumer<Vector3fc> consumer);
 }

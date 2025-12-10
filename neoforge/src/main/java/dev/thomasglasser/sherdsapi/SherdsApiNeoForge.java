@@ -6,12 +6,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 
-@Mod(SherdsApi.MOD_ID)
+@Mod(SherdsApi.MOD_NAMESPACE)
 public class SherdsApiNeoForge {
     public SherdsApiNeoForge(IEventBus eventBus) {
         SherdsApi.init();
 
         eventBus.addListener(SherdsApiDataGenerators::onGatherData);
-        eventBus.addListener((RegisterSpecialModelRendererEvent event) -> event.register(SherdsApi.modLoc("decorated_pot"), StackSensitiveDecoratedPotSpecialRenderer.Unbaked.MAP_CODEC));
+        eventBus.addListener((RegisterSpecialModelRendererEvent event) -> event.register(SherdsApi.modId("decorated_pot"), StackSensitiveDecoratedPotSpecialRenderer.Unbaked.MAP_CODEC));
     }
 }

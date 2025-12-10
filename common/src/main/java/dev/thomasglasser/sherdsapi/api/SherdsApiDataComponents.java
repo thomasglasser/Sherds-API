@@ -6,15 +6,15 @@ import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
 import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SherdsApiDataComponents {
-    public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SherdsApi.MOD_ID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SherdsApi.MOD_NAMESPACE);
 
     /**
      * Data component type for sherd pattern. Points to a texture.
      */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> SHERD_PATTERN = DATA_COMPONENTS.registerComponentType("sherd_pattern", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Identifier>> SHERD_PATTERN = DATA_COMPONENTS.registerComponentType("sherd_pattern", builder -> builder.persistent(Identifier.CODEC).networkSynchronized(Identifier.STREAM_CODEC).cacheEncoding());
     /**
      * Data component type for stack pot decorations. Points to a list of stack pot decorations.
      */

@@ -15,7 +15,7 @@ import net.minecraft.world.item.Items;
 
 public class SherdsApiModelProvider extends ExtendedModelProvider {
     public SherdsApiModelProvider(PackOutput output) {
-        super(output, SherdsApi.MOD_ID);
+        super(output, SherdsApi.MOD_NAMESPACE);
     }
 
     @Override

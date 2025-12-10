@@ -13,17 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
 import net.minecraft.client.renderer.blockentity.state.DecoratedPotRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.MaterialSet;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
@@ -103,35 +104,36 @@ public abstract class DecoratedPotRendererMixin implements BlockEntityRenderer<D
 
     @Override
     public void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, StackPotDecorations decorations, int outlineColor) {
-        RenderType rendertype = Sheets.DECORATED_POT_BASE.renderType(RenderType::entitySolid);
+        RenderType rendertype = Sheets.DECORATED_POT_BASE.renderType(RenderTypes::entitySolid);
         TextureAtlasSprite textureatlassprite = this.materials.get(Sheets.DECORATED_POT_BASE);
         nodeCollector.submitModelPart(this.neck, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
         nodeCollector.submitModelPart(this.top, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
         nodeCollector.submitModelPart(this.bottom, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
         Material material = sherdsapi$getSideMaterial(decorations.front());
-        nodeCollector.submitModelPart(this.frontSide, poseStack, material.renderType(RenderType::entitySolid), packedLight, packedOverlay, this.materials.get(material), false, false, -1, null, outlineColor);
+        nodeCollector.submitModelPart(this.frontSide, poseStack, material.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material), false, false, -1, null, outlineColor);
         Material material1 = sherdsapi$getSideMaterial(decorations.back());
-        nodeCollector.submitModelPart(this.backSide, poseStack, material1.renderType(RenderType::entitySolid), packedLight, packedOverlay, this.materials.get(material1), false, false, -1, null, outlineColor);
+        nodeCollector.submitModelPart(this.backSide, poseStack, material1.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material1), false, false, -1, null, outlineColor);
         Material material2 = sherdsapi$getSideMaterial(decorations.left());
-        nodeCollector.submitModelPart(this.leftSide, poseStack, material2.renderType(RenderType::entitySolid), packedLight, packedOverlay, this.materials.get(material2), false, false, -1, null, outlineColor);
+        nodeCollector.submitModelPart(this.leftSide, poseStack, material2.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material2), false, false, -1, null, outlineColor);
         Material material3 = sherdsapi$getSideMaterial(decorations.right());
-        nodeCollector.submitModelPart(this.rightSide, poseStack, material3.renderType(RenderType::entitySolid), packedLight, packedOverlay, this.materials.get(material3), false, false, -1, null, outlineColor);
+        nodeCollector.submitModelPart(this.rightSide, poseStack, material3.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material3), false, false, -1, null, outlineColor);
     }
 
     @Unique
-    private static final Map<ResourceLocation, Material> CUSTOM_MATERIALS = new HashMap<>();
+    private static final Map<Identifier, Material> CUSTOM_MATERIALS = new HashMap<>();
 
     @Unique
-    private static Material sherdsapi$getDecoratedPotMaterial(ResourceLocation key) {
-        return CUSTOM_MATERIALS.computeIfAbsent(key, Sheets.DECORATED_POT_MAPPER::apply);
+    private static Material sherdsapi$getDecoratedPotMaterial(Identifier id) {
+        return CUSTOM_MATERIALS.computeIfAbsent(id, Sheets.DECORATED_POT_MAPPER::apply);
     }
 
     @Unique
     private static Material sherdsapi$getSideMaterial(Optional<ItemStack> optional) {
         if (optional.isPresent()) {
             ItemStack stack = optional.get();
-            if (stack.has(SherdsApiDataComponents.SHERD_PATTERN.get())) {
-                return sherdsapi$getDecoratedPotMaterial(stack.get(SherdsApiDataComponents.SHERD_PATTERN.get()));
+            Identifier id = stack.get(SherdsApiDataComponents.SHERD_PATTERN.get());
+            if (id != null) {
+                return sherdsapi$getDecoratedPotMaterial(id);
             } else {
                 return getSideMaterial(Optional.of(stack.getItem()));
             }
