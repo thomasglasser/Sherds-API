@@ -3,6 +3,9 @@ package dev.thomasglasser.sherdsapi.impl.mixin;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorations;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorationsHolder;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -18,10 +21,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-
 @Mixin(DecoratedPotBlock.class)
 public class DecoratedPotBlockMixin {
     @Inject(method = "appendHoverText", at = @At("RETURN"))
@@ -34,7 +33,7 @@ public class DecoratedPotBlockMixin {
         }
     }
 
-    @Inject(method = {"lambda$getDrops$0", "method_49815"}, at = @At("HEAD"), cancellable = true)
+    @Inject(method = { "lambda$getDrops$0", "method_49815" }, at = @At("HEAD"), cancellable = true)
     private static void getDrops(DecoratedPotBlockEntity decoratedpotblockentity, Consumer<ItemStack> p_330132_, CallbackInfo ci) {
         if (decoratedpotblockentity.getDecorations() == PotDecorations.EMPTY) {
             StackPotDecorations decorations = ((StackPotDecorationsHolder) decoratedpotblockentity).sherdsapi$getDecorations();

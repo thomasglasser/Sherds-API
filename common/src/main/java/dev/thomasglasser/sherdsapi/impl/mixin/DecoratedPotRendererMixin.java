@@ -4,6 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorations;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorationsHolder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -22,18 +25,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Mixin(DecoratedPotRenderer.class)
 public abstract class DecoratedPotRendererMixin {
-    @Shadow protected abstract void renderSide(ModelPart modelPart, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Material material);
+    @Shadow
+    protected abstract void renderSide(ModelPart modelPart, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Material material);
 
-    @Shadow @Final private ModelPart frontSide;
-    @Shadow @Final private ModelPart backSide;
-    @Shadow @Final private ModelPart leftSide;
-    @Shadow @Final private ModelPart rightSide;
+    @Shadow
+    @Final
+    private ModelPart frontSide;
+    @Shadow
+    @Final
+    private ModelPart backSide;
+    @Shadow
+    @Final
+    private ModelPart leftSide;
+    @Shadow
+    @Final
+    private ModelPart rightSide;
 
     @Shadow
     private static Material getSideMaterial(Optional<Item> item) {
@@ -72,8 +80,7 @@ public abstract class DecoratedPotRendererMixin {
                 if (material != null) {
                     return material;
                 }
-            }
-            else {
+            } else {
                 return getSideMaterial(Optional.of(stack.getItem()));
             }
         }

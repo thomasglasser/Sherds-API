@@ -2,6 +2,9 @@ package dev.thomasglasser.sherdsapi.impl;
 
 import com.mojang.serialization.Codec;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -9,13 +12,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+import org.jetbrains.annotations.Nullable;
 
 public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> left, Optional<ItemStack> right, Optional<ItemStack> front) {
+
     public static final Codec<StackPotDecorations> CODEC = ItemStack.OPTIONAL_CODEC
             .sizeLimitedListOf(4)
             .xmap(StackPotDecorations::new, StackPotDecorations::ordered);
@@ -24,7 +24,6 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
             .map(StackPotDecorations::new, StackPotDecorations::ordered);
 
     private static final StackPotDecorations EMPTY = new StackPotDecorations(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-
     private StackPotDecorations(List<ItemStack> p_331803_) {
         this(getItem(p_331803_, 0), getItem(p_331803_, 1), getItem(p_331803_, 2), getItem(p_331803_, 3));
     }
