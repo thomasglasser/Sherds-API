@@ -74,7 +74,7 @@ jobs:
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if: inputs.publish_github && matrix.website == 'github_release' && matrix.loader == 'common' && inputs.publish_common
+        if: inputs.publish_github && matrix.website == 'github_release' && matrix.loader == 'common'
         with:
           name: &name ${{ inputs.title }}
           version: &version ${{ inputs.version }}
@@ -83,12 +83,12 @@ jobs:
           game-versions: &game-versions |
             ${{ inputs.game_versions }}
           files: |
-            common/build/libs/!(*-@(dev|sources|javadoc)).jar
-            common/build/libs/*-@(dev|sources|javadocs).jar
-            neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            neoforge/build/libs/*-@(dev|sources|javadocs).jar
-            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-            fabric/build/libs/*-@(dev|sources|javadocs).jar
+            ${{ inputs.publish_common && 'common/build/libs/!(*-@(dev|sources|javadoc)).jar' || '' }}
+            ${{ inputs.publish_common && 'common/build/libs/*-@(dev|sources|javadocs).jar' || '' }}
+            ${{ inputs.publish_neoforge && 'neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar' || '' }}
+            ${{ inputs.publish_neoforge && 'neoforge/build/libs/*-@(dev|sources|javadocs).jar' || '' }}
+            ${{ inputs.publish_fabric && 'fabric/build/libs/!(*-@(dev|sources|javadoc)).jar' || '' }}
+            ${{ inputs.publish_fabric && 'fabric/build/libs/*-@(dev|sources|javadocs).jar' || '' }}
           github-tag: ${{ inputs.game_versions }}-${{ inputs.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
