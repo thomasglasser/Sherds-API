@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import org.joml.Vector3fc;
 
 public interface StackPotRenderer {
-    void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, StackPotDecorations decorations, int outlineColor);
+    void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, StackPotDecorations decorations, int outlineColor);
 
     void getExtents(Consumer<Vector3fc> consumer);
 }

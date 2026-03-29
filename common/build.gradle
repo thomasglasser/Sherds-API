@@ -8,11 +8,6 @@ plugins {
 
 neoForge {
 	neoFormVersion = "${minecraft_version}-${neoform_version}"
-
-	parchment {
-		minecraftVersion = parchment_minecraft_version
-		mappingsVersion = parchment_version
-	}
 }
 
 sourceSets.main.resources.srcDir project(":common").file('./src/generated/resources')

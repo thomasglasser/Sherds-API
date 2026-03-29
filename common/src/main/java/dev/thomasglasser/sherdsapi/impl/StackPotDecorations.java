@@ -27,35 +27,29 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
     public static final StreamCodec<RegistryFriendlyByteBuf, StackPotDecorations> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC
             .apply(ByteBufCodecs.list(4))
             .map(StackPotDecorations::new, StackPotDecorations::ordered);
-    private StackPotDecorations(List<ItemStack> p_331803_) {
-        this(getItem(p_331803_, 0), getItem(p_331803_, 1), getItem(p_331803_, 2), getItem(p_331803_, 3));
+    private StackPotDecorations(List<ItemStack> stacks) {
+        this(getStack(stacks, 0), getStack(stacks, 1), getStack(stacks, 2), getStack(stacks, 3));
     }
 
-    public StackPotDecorations(ItemStack p_331754_, ItemStack p_331488_, ItemStack p_331845_, ItemStack p_330988_) {
-        this(List.of(p_331754_, p_331488_, p_331845_, p_330988_));
+    public StackPotDecorations(ItemStack back, ItemStack left, ItemStack right, ItemStack front) {
+        this(List.of(back, left, right, front));
     }
 
-    private static Optional<ItemStack> getItem(List<ItemStack> decorations, int index) {
-        if (index >= decorations.size()) {
+    private static Optional<ItemStack> getStack(List<ItemStack> sherds, int i) {
+        if (i >= sherds.size()) {
             return Optional.empty();
         } else {
-            ItemStack item = decorations.get(index);
-            return item.is(Items.BRICK) ? Optional.empty() : Optional.of(item);
+            ItemStack item = sherds.get(i);
+            return item.is(Items.BRICK) && !item.has(SherdsApiDataComponents.SHERD_PATTERN.get()) ? Optional.empty() : Optional.of(item);
         }
     }
 
     public List<ItemStack> ordered() {
-        return Stream.of(this.back, this.left, this.right, this.front).map(p_331733_ -> p_331733_.orElse(Items.BRICK.getDefaultInstance())).toList();
-    }
-
-    public static ItemStack createDecoratedPotItem(StackPotDecorations decorations) {
-        ItemStack itemstack = Items.DECORATED_POT.getDefaultInstance();
-        itemstack.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), decorations);
-        return itemstack;
+        return Stream.of(this.back, this.left, this.right, this.front).map(stack -> stack.orElse(Items.BRICK.getDefaultInstance())).toList();
     }
 
     @Override
-    public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         consumer.accept(CommonComponents.EMPTY);
         addSideDetailsToTooltip(consumer, this.front);
         addSideDetailsToTooltip(consumer, this.left);
@@ -63,7 +57,7 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
         addSideDetailsToTooltip(consumer, this.back);
     }
 
-    private static void addSideDetailsToTooltip(Consumer<Component> consumer, Optional<ItemStack> stack) {
-        consumer.accept(stack.orElse(Items.BRICK.getDefaultInstance()).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY));
+    private static void addSideDetailsToTooltip(Consumer<Component> consumer, Optional<ItemStack> side) {
+        consumer.accept(side.orElse(Items.BRICK.getDefaultInstance()).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY));
     }
 }

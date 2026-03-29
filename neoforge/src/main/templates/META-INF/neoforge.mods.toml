@@ -20,15 +20,15 @@ config = "${mod_id}.neoforge.mixins.json"
 [mc-publish]
 loaders = ['neoforge']
 [[dependencies.${mod_id}]]
-modId="neoforge"
-type="required"
-versionRange="[${neoforge_version},)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
 versionRange="[${minecraft_version},${next_minecraft_version})"
+ordering="NONE"
+side="BOTH"
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[${neoforge_version},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.${mod_id}]]

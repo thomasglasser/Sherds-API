@@ -1,5 +1,6 @@
 package dev.thomasglasser.sherdsapi.impl.mixin;
 
+import dev.thomasglasser.sherdsapi.api.SherdsApiConstants;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorations;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorationsHolder;
@@ -22,37 +23,40 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(DecoratedPotBlockEntity.class)
 public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implements StackPotDecorationsHolder {
     @Unique
+    private static final String sherdsapi$TAG_SHERDS = SherdsApiConstants.MOD_ID + "_sherds";
+
+    @Unique
     private @Nullable StackPotDecorations sherdsapi$decorations = null;
 
-    private DecoratedPotBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
-        super(type, pos, blockState);
+    private DecoratedPotBlockEntityMixin(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState) {
+        super(type, worldPosition, blockState);
     }
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    private void saveAdditional(ValueOutput output, CallbackInfo ci) {
+    private void saveStackDecorations(ValueOutput output, CallbackInfo ci) {
         if (sherdsapi$decorations != null) {
-            output.store("stack_sherds", StackPotDecorations.CODEC, this.sherdsapi$decorations);
+            output.store(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC, this.sherdsapi$decorations);
         }
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void loadAdditional(ValueInput input, CallbackInfo ci) {
-        this.sherdsapi$decorations = input.read("stack_sherds", StackPotDecorations.CODEC).orElse(null);
+    private void loadStackDecorations(ValueInput input, CallbackInfo ci) {
+        this.sherdsapi$decorations = input.read(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC).orElse(null);
     }
 
     @Inject(method = "collectImplicitComponents", at = @At("TAIL"))
-    private void collectImplicitComponents(DataComponentMap.Builder components, CallbackInfo ci) {
+    private void collectStackDecorations(DataComponentMap.Builder components, CallbackInfo ci) {
         components.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), this.sherdsapi$decorations);
     }
 
     @Inject(method = "applyImplicitComponents", at = @At("TAIL"))
-    private void applyImplicitComponents(DataComponentGetter dataComponentGetter, CallbackInfo ci) {
-        this.sherdsapi$decorations = dataComponentGetter.get(SherdsApiDataComponents.STACK_POT_DECORATIONS.get());
+    private void applyStackDecorations(DataComponentGetter components, CallbackInfo ci) {
+        this.sherdsapi$decorations = components.get(SherdsApiDataComponents.STACK_POT_DECORATIONS.get());
     }
 
     @Inject(method = "removeComponentsFromTag", at = @At("TAIL"))
-    private void removeComponentsFromTag(ValueOutput output, CallbackInfo ci) {
-        output.discard("stack_sherds");
+    private void removeStackDecorations(ValueOutput output, CallbackInfo ci) {
+        output.discard(sherdsapi$TAG_SHERDS);
     }
 
     @Override

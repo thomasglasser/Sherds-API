@@ -6,11 +6,6 @@ plugins {
 neoForge {
 	version = "${neoforge_version}"
 
-	parchment {
-		minecraftVersion = parchment_minecraft_version
-		mappingsVersion = parchment_version
-	}
-
 	def at = rootProject.project(":common").file('src/main/resources/META-INF/accesstransformer.cfg')
 	if (file(at).exists()) {
 		accessTransformers = [at]
@@ -59,6 +54,6 @@ dependencies {
 	jarJar api("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 	// Runtime
-//	localRuntime "maven.modrinth:jade:${jade_version}+neoforge"
+	localRuntime "maven.modrinth:jade:${jade_version}+neoforge"
 //	localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }

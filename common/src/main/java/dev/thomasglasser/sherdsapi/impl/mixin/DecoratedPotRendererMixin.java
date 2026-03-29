@@ -9,7 +9,7 @@ import dev.thomasglasser.sherdsapi.impl.StackPotDecorations;
 import dev.thomasglasser.sherdsapi.impl.StackPotDecorationsHolder;
 import dev.thomasglasser.sherdsapi.impl.StackPotRenderer;
 import dev.thomasglasser.sherdsapi.impl.client.renderer.blockentity.state.StackDecoratedPotRenderState;
-import java.util.HashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import java.util.Optional;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,14 +22,15 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,13 +42,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(DecoratedPotRenderer.class)
 public abstract class DecoratedPotRendererMixin implements BlockEntityRenderer<DecoratedPotBlockEntity, DecoratedPotRenderState>, StackPotRenderer {
     @Shadow
-    private static Material getSideMaterial(Optional<Item> item) {
+    private static SpriteId getSideSprite(Optional<Item> item) {
         return null;
     }
 
     @Shadow
     @Final
-    private MaterialSet materials;
+    private SpriteGetter sprites;
 
     @Shadow
     @Final
@@ -63,11 +64,7 @@ public abstract class DecoratedPotRendererMixin implements BlockEntityRenderer<D
 
     @Shadow
     @Final
-    private ModelPart frontSide;
-
-    @Shadow
-    @Final
-    private ModelPart backSide;
+    private ModelPart rightSide;
 
     @Shadow
     @Final
@@ -75,7 +72,11 @@ public abstract class DecoratedPotRendererMixin implements BlockEntityRenderer<D
 
     @Shadow
     @Final
-    private ModelPart rightSide;
+    private ModelPart backSide;
+
+    @Shadow
+    @Final
+    private ModelPart frontSide;
 
     @Override
     public DecoratedPotRenderState createRenderState() {
@@ -83,62 +84,101 @@ public abstract class DecoratedPotRendererMixin implements BlockEntityRenderer<D
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/level/block/entity/DecoratedPotBlockEntity;Lnet/minecraft/client/renderer/blockentity/state/DecoratedPotRenderState;FLnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V", at = @At("TAIL"))
-    public void extractRenderState(DecoratedPotBlockEntity blockEntity, DecoratedPotRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress, CallbackInfo ci) {
-        if (blockEntity.getDecorations() == PotDecorations.EMPTY && blockEntity instanceof StackPotDecorationsHolder holder) {
-            StackPotDecorations stackPotDecorations = holder.sherdsapi$getDecorations();
-            if (stackPotDecorations != null) {
-                ((StackDecoratedPotRenderState) (renderState)).stackDecorations = stackPotDecorations;
-            }
+    public void extractStackDecorations(DecoratedPotBlockEntity blockEntity, DecoratedPotRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, CallbackInfo ci) {
+        StackPotDecorations stackPotDecorations = ((StackPotDecorationsHolder) blockEntity).sherdsapi$getDecorations();
+        if (stackPotDecorations != null) {
+            ((StackDecoratedPotRenderState) state).stackDecorations = stackPotDecorations;
         }
     }
 
-    @WrapOperation(method = "submit(Lnet/minecraft/client/renderer/blockentity/state/DecoratedPotRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/blockentity/DecoratedPotRenderer;submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IILnet/minecraft/world/level/block/entity/PotDecorations;I)V"))
-    private void submit(DecoratedPotRenderer instance, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, PotDecorations decorations, int outlineColor, Operation<Void> original, @Local(argsOnly = true) DecoratedPotRenderState renderState) {
-        StackPotDecorations stackDecorations = ((StackDecoratedPotRenderState) renderState).stackDecorations;
+    @WrapOperation(method = "submit(Lnet/minecraft/client/renderer/blockentity/state/DecoratedPotRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/blockentity/DecoratedPotRenderer;submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IILnet/minecraft/world/level/block/entity/PotDecorations;I)V"))
+    private void submitStackDecorations(DecoratedPotRenderer renderer, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, PotDecorations decorations, int outlineColor, Operation<Void> original, @Local(argsOnly = true) DecoratedPotRenderState state) {
+        StackPotDecorations stackDecorations = ((StackDecoratedPotRenderState) state).stackDecorations;
         if (stackDecorations != null) {
-            sherdsapi$submit(poseStack, nodeCollector, packedLight, packedOverlay, stackDecorations, outlineColor);
+            sherdsapi$submit(poseStack, submitNodeCollector, lightCoords, overlayCoords, stackDecorations, outlineColor);
         } else {
-            original.call(instance, poseStack, nodeCollector, packedLight, packedOverlay, decorations, outlineColor);
+            original.call(renderer, poseStack, submitNodeCollector, lightCoords, overlayCoords, decorations, outlineColor);
         }
     }
 
     @Override
-    public void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, StackPotDecorations decorations, int outlineColor) {
-        RenderType rendertype = Sheets.DECORATED_POT_BASE.renderType(RenderTypes::entitySolid);
-        TextureAtlasSprite textureatlassprite = this.materials.get(Sheets.DECORATED_POT_BASE);
-        nodeCollector.submitModelPart(this.neck, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
-        nodeCollector.submitModelPart(this.top, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
-        nodeCollector.submitModelPart(this.bottom, poseStack, rendertype, packedLight, packedOverlay, textureatlassprite, false, false, -1, null, outlineColor);
-        Material material = sherdsapi$getSideMaterial(decorations.front());
-        nodeCollector.submitModelPart(this.frontSide, poseStack, material.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material), false, false, -1, null, outlineColor);
-        Material material1 = sherdsapi$getSideMaterial(decorations.back());
-        nodeCollector.submitModelPart(this.backSide, poseStack, material1.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material1), false, false, -1, null, outlineColor);
-        Material material2 = sherdsapi$getSideMaterial(decorations.left());
-        nodeCollector.submitModelPart(this.leftSide, poseStack, material2.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material2), false, false, -1, null, outlineColor);
-        Material material3 = sherdsapi$getSideMaterial(decorations.right());
-        nodeCollector.submitModelPart(this.rightSide, poseStack, material3.renderType(RenderTypes::entitySolid), packedLight, packedOverlay, this.materials.get(material3), false, false, -1, null, outlineColor);
+    public void sherdsapi$submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, StackPotDecorations decorations, int outlineColor) {
+        RenderType renderType = Sheets.DECORATED_POT_BASE.renderType(RenderTypes::entitySolid);
+        TextureAtlasSprite sprite = this.sprites.get(Sheets.DECORATED_POT_BASE);
+        submitNodeCollector.submitModelPart(this.neck, poseStack, renderType, lightCoords, overlayCoords, sprite, false, false, -1, null, outlineColor);
+        submitNodeCollector.submitModelPart(this.top, poseStack, renderType, lightCoords, overlayCoords, sprite, false, false, -1, null, outlineColor);
+        submitNodeCollector.submitModelPart(this.bottom, poseStack, renderType, lightCoords, overlayCoords, sprite, false, false, -1, null, outlineColor);
+        SpriteId frontSprite = sherdsapi$getSideSprite(decorations.front());
+        submitNodeCollector.submitModelPart(
+                this.frontSide,
+                poseStack,
+                frontSprite.renderType(RenderTypes::entitySolid),
+                lightCoords,
+                overlayCoords,
+                this.sprites.get(frontSprite),
+                false,
+                false,
+                -1,
+                null,
+                outlineColor);
+        SpriteId backSprite = sherdsapi$getSideSprite(decorations.back());
+        submitNodeCollector.submitModelPart(
+                this.backSide,
+                poseStack,
+                backSprite.renderType(RenderTypes::entitySolid),
+                lightCoords,
+                overlayCoords,
+                this.sprites.get(backSprite),
+                false,
+                false,
+                -1,
+                null,
+                outlineColor);
+        SpriteId leftSprite = sherdsapi$getSideSprite(decorations.left());
+        submitNodeCollector.submitModelPart(
+                this.leftSide,
+                poseStack,
+                leftSprite.renderType(RenderTypes::entitySolid),
+                lightCoords,
+                overlayCoords,
+                this.sprites.get(leftSprite),
+                false,
+                false,
+                -1,
+                null,
+                outlineColor);
+        SpriteId rightSprite = sherdsapi$getSideSprite(decorations.right());
+        submitNodeCollector.submitModelPart(
+                this.rightSide,
+                poseStack,
+                rightSprite.renderType(RenderTypes::entitySolid),
+                lightCoords,
+                overlayCoords,
+                this.sprites.get(rightSprite),
+                false,
+                false,
+                -1,
+                null,
+                outlineColor);
     }
 
     @Unique
-    private static final Map<Identifier, Material> CUSTOM_MATERIALS = new HashMap<>();
+    private static final Map<Identifier, SpriteId> sherdsapi$CUSTOM_SPRITES = new Object2ObjectOpenHashMap<>();
 
     @Unique
-    private static Material sherdsapi$getDecoratedPotMaterial(Identifier id) {
-        return CUSTOM_MATERIALS.computeIfAbsent(id, Sheets.DECORATED_POT_MAPPER::apply);
+    private static SpriteId sherdsapi$getDecoratedPotSprite(Identifier id) {
+        return sherdsapi$CUSTOM_SPRITES.computeIfAbsent(id, Sheets.DECORATED_POT_MAPPER::apply);
     }
 
     @Unique
-    private static Material sherdsapi$getSideMaterial(Optional<ItemStack> optional) {
-        if (optional.isPresent()) {
-            ItemStack stack = optional.get();
+    private static SpriteId sherdsapi$getSideSprite(Optional<ItemStack> optional) {
+        return optional.map(stack -> {
             Identifier id = stack.get(SherdsApiDataComponents.SHERD_PATTERN.get());
             if (id != null) {
-                return sherdsapi$getDecoratedPotMaterial(id);
+                return sherdsapi$getDecoratedPotSprite(id);
             } else {
-                return getSideMaterial(Optional.of(stack.getItem()));
+                return getSideSprite(Optional.of(stack.getItem()));
             }
-        }
-
-        return Sheets.DECORATED_POT_SIDE;
+        }).orElse(Sheets.DECORATED_POT_SIDE);
     }
 }
