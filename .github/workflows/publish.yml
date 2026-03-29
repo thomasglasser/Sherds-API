@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       title:
-        description: "title"
+        description: "The title for the release"
         required: true
         type: string
-      last_version:
-        description: "previous mod version"
+      previous_tag:
+        description: "The previous git tag to use for generating the changelog"
         required: true
         type: string
       version:
-        description: "new mod version"
+        description: "The new version for the release"
         required: true
         type: string
       game_versions:
-        description: "the minecraft versions it supports"
+        description: "The supported Minecraft versions for the release"
         required: true
         type: string
 
@@ -67,6 +67,11 @@ jobs:
         continue-on-error: true
         if : (matrix.website == 'github_release' && matrix.loader == 'common')
         with:
+          name: &name ${{ inputs.title }}
+          version: &version ${{ steps.mod_env.outputs.mod_version }}
+          changelog: &changelog ${{ env.changelog }}${{ inputs.previous_tag }}...${{ inputs.version }}
+          game-versions: &game-versions |
+            ${{ inputs.game_versions }}
           files: |
             common/build/libs/!(*-@(dev|sources|javadoc)).jar
             common/build/libs/*-@(dev|sources|javadocs).jar
@@ -74,32 +79,22 @@ jobs:
             neoforge/build/libs/*-@(dev|sources|javadocs).jar
             fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             fabric/build/libs/*-@(dev|sources|javadocs).jar
-          name : ${{ inputs.title }}
-          version: ${{ steps.mod_env.outputs.mod_version }}
-          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
           github-tag: ${{ inputs.game_versions }}-${{ steps.mod_env.outputs.mod_version }}
           github-generate-changelog: true
-          java : Java 21
-          game-versions: |
-            ${{ inputs.game_versions }}
-
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if : (matrix.website == 'modrinth' && matrix.loader != 'common')
+        if: (matrix.website == 'modrinth' && matrix.loader != 'common')
         with:
+          name: *name
+          version: *version
+          changelog: *changelog
+          game-versions: *game-versions
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadoc).jar
-          name: ${{ inputs.title }}
-          version: ${{ steps.mod_env.outputs.mod_version }}
-          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
-          java: Java 21
-          game-versions: |
-            ${{ inputs.game_versions }}
-
           modrinth-id: sherdsapi
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
@@ -108,15 +103,12 @@ jobs:
         continue-on-error: true
         if: (matrix.website == 'curseforge' && matrix.loader != 'common')
         with:
+          name: *name
+          version: *version
+          changelog: *changelog
+          game-versions: *game-versions
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
             ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadocs).jar
-          name: ${{ inputs.title }}
-          version: ${{ steps.mod_env.outputs.mod_version }}
-          changelog: ${{ env.changelog }}${{ inputs.last_version }}...${{ inputs.version }}
-          java: Java 21
-          game-versions: |
-            ${{ inputs.game_versions }}
-
           curseforge-id: 847583
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
