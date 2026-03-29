@@ -3,6 +3,7 @@ package dev.thomasglasser.sherdsapi.impl;
 import com.mojang.serialization.Codec;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -59,5 +60,33 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
 
     private static void addSideDetailsToTooltip(Consumer<Component> consumer, Optional<ItemStack> side) {
         consumer.accept(side.orElse(Items.BRICK.getDefaultInstance()).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StackPotDecorations other = (StackPotDecorations) o;
+        return areItemStacksEqual(back, other.back) &&
+                areItemStacksEqual(left, other.left) &&
+                areItemStacksEqual(right, other.right) &&
+                areItemStacksEqual(front, other.front);
+    }
+
+    private static boolean areItemStacksEqual(Optional<ItemStack> a, Optional<ItemStack> b) {
+        return a.isPresent() == b.isPresent() && (a.isEmpty() || ItemStack.isSameItemSameComponents(a.get(), b.get()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getStackHashCode(back),
+                getStackHashCode(left),
+                getStackHashCode(right),
+                getStackHashCode(front));
+    }
+
+    private static int getStackHashCode(Optional<ItemStack> stack) {
+        return stack.map(ItemStack::hashItemAndComponents).orElse(0);
     }
 }
