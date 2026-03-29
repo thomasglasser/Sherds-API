@@ -19,6 +19,31 @@ on:
         description: "The supported Minecraft versions for the release"
         required: true
         type: string
+      publish_common:
+        description: "Publish for Common"
+        type: boolean
+        default: true
+      publish_neoforge:
+        description: "Publish for NeoForge"
+        type: boolean
+        default: true
+      publish_fabric:
+        description: "Publish for Fabric"
+        type: boolean
+        default: true
+      publish_github:
+        description: "Publish to GitHub Releases"
+        type: boolean
+        default: true
+      publish_modrinth:
+        description: "Publish to Modrinth"
+        type: boolean
+        default: true
+      publish_curseforge:
+        description: "Publish to CurseForge"
+        type: boolean
+        default: true
+
 
 jobs:
   call-build-workflow:
@@ -46,30 +71,15 @@ jobs:
         with:
           name: Sherds API
 
-      - name: Checking and setting the environment
-        id: mod_env
-        continue-on-error: true
-        run: |
-          export loader=${{ matrix.loader }}
-          export name=$(ls ${loader}/build/libs/ | grep shadow -v | grep sources -v | grep javadoc -v | awk -F.jar '{print $1}')
-          export mod_name=$(echo $name | awk -F- '{print $1}')
-          export loader_name=$(echo $name | awk -F- '{print $2}')
-          export mc_version=$(echo $name | awk -F- '{print $3}')
-          export mod_version=$(echo $name | awk -F- '{print $4}')
-          echo "name=$name" >> $GITHUB_OUTPUT
-          echo "mod_name=$mod_name" >> $GITHUB_OUTPUT
-          echo "loader_name=$loader_name" >> $GITHUB_OUTPUT
-          echo "mc_version=$mc_version" >> $GITHUB_OUTPUT
-          echo "mod_version=$mod_version" >> $GITHUB_OUTPUT
-
       - name: Publish Github Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if : (matrix.website == 'github_release' && matrix.loader == 'common')
+        if: inputs.publish_github && matrix.website == 'github_release' && matrix.loader == 'common' && inputs.publish_common
         with:
           name: &name ${{ inputs.title }}
-          version: &version ${{ steps.mod_env.outputs.mod_version }}
-          changelog: &changelog ${{ env.changelog }}${{ inputs.previous_tag }}...${{ inputs.version }}
+          version: &version ${{ inputs.version }}
+          changelog: &changelog ${{ env.changelog }}${{ inputs.previous_tag }}...${{ inputs.game_versions }}-${{ inputs.version }}
+          java: &java Java 25
           game-versions: &game-versions |
             ${{ inputs.game_versions }}
           files: |
@@ -79,18 +89,18 @@ jobs:
             neoforge/build/libs/*-@(dev|sources|javadocs).jar
             fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             fabric/build/libs/*-@(dev|sources|javadocs).jar
-          github-tag: ${{ inputs.game_versions }}-${{ steps.mod_env.outputs.mod_version }}
-          github-generate-changelog: true
+          github-tag: ${{ inputs.game_versions }}-${{ inputs.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Modrinth Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if: (matrix.website == 'modrinth' && matrix.loader != 'common')
+        if: matrix.website == 'modrinth' && inputs.publish_modrinth && ((matrix.loader == 'neoforge' && inputs.publish_neoforge) || (matrix.loader == 'fabric' && inputs.publish_fabric))
         with:
           name: *name
           version: *version
           changelog: *changelog
+          java: *java
           game-versions: *game-versions
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
@@ -101,11 +111,12 @@ jobs:
       - name: Publish Curseforge Release
         uses: Kir-Antipov/mc-publish@v3.3
         continue-on-error: true
-        if: (matrix.website == 'curseforge' && matrix.loader != 'common')
+        if: matrix.website == 'curseforge' && inputs.publish_curseforge && ((matrix.loader == 'neoforge' && inputs.publish_neoforge) || (matrix.loader == 'fabric' && inputs.publish_fabric))
         with:
           name: *name
           version: *version
           changelog: *changelog
+          java: *java
           game-versions: *game-versions
           files: |
             ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
