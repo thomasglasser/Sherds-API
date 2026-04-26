@@ -3,6 +3,7 @@ package dev.thomasglasser.sherdsapi.impl;
 import com.mojang.serialization.Codec;
 import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import net.minecraft.nbt.CompoundTag;
@@ -32,6 +33,16 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
         this(List.of(p_331754_, p_331488_, p_331845_, p_330988_));
     }
 
+    public static @Nullable StackPotDecorations load(@Nullable CompoundTag tag) {
+        return tag != null && tag.contains("patterns") ? CODEC.parse(NbtOps.INSTANCE, tag.get("patterns")).result().orElse(null) : null;
+    }
+
+    public static ItemStack createDecoratedPotItem(StackPotDecorations decorations) {
+        ItemStack itemstack = Items.DECORATED_POT.getDefaultInstance();
+        itemstack.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), decorations);
+        return itemstack;
+    }
+
     private static Optional<ItemStack> getItem(List<ItemStack> decorations, int index) {
         if (index >= decorations.size()) {
             return Optional.empty();
@@ -54,13 +65,31 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
         return Stream.of(this.back, this.left, this.right, this.front).map(p_331733_ -> p_331733_.orElse(Items.BRICK.getDefaultInstance())).toList();
     }
 
-    public static @Nullable StackPotDecorations load(@Nullable CompoundTag tag) {
-        return tag != null && tag.contains("patterns") ? CODEC.parse(NbtOps.INSTANCE, tag.get("patterns")).result().orElse(null) : null;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StackPotDecorations other = (StackPotDecorations) o;
+        return areItemStacksEqual(back, other.back) &&
+                areItemStacksEqual(left, other.left) &&
+                areItemStacksEqual(right, other.right) &&
+                areItemStacksEqual(front, other.front);
     }
 
-    public static ItemStack createDecoratedPotItem(StackPotDecorations decorations) {
-        ItemStack itemstack = Items.DECORATED_POT.getDefaultInstance();
-        itemstack.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), decorations);
-        return itemstack;
+    private static boolean areItemStacksEqual(Optional<ItemStack> a, Optional<ItemStack> b) {
+        return a.isPresent() == b.isPresent() && (a.isEmpty() || ItemStack.isSameItemSameComponents(a.get(), b.get()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getStackHashCode(back),
+                getStackHashCode(left),
+                getStackHashCode(right),
+                getStackHashCode(front));
+    }
+
+    private static int getStackHashCode(Optional<ItemStack> stack) {
+        return stack.map(ItemStack::hashItemAndComponents).orElse(0);
     }
 }
