@@ -1,5 +1,4 @@
 modLoader="javafml"
-loaderVersion="[${major_fml_version},)"
 license="${license}"
 issueTrackerURL="https://github.com/thomasglasser/${github_name}/issues"
 [[mods]]

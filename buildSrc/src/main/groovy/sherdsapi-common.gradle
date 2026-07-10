@@ -77,7 +77,7 @@ repositories {
     }
     maven {
         name = 'TommyLib'
-        url = 'https://dl.cloudsmith.io/public/thomasglasser/tommylib/maven/'
+        url = 'https://maven.thomasglasser.dev/releases/'
         content {
             includeGroupAndSubgroups("dev.thomasglasser.tommylib")
         }
@@ -133,7 +133,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             license: license,
             description: project.description,
             neoforge_version: neoforge_version,
-            major_fml_version: major_fml_version,
             fabric_version: fabric_version,
             fabric_loader_version: fabric_loader_version,
             java_version: java_version,
@@ -214,9 +213,7 @@ publishing {
         register('mavenJava', MavenPublication) {
             artifactId base.archivesName.get()
             from components.java
-        }
 
-        maven(MavenPublication) {
             pom {
                 name = project.mod_name
                 description = project.description
@@ -248,11 +245,11 @@ publishing {
 
     repositories {
         maven {
-            name = "Cloudsmith"
-            url = "https://maven.cloudsmith.io/thomasglasser/${mod_id}/"
+            name = "Reposilite"
+            url = "https://maven.thomasglasser.dev/releases"
             credentials {
-                username = project.findProperty("CLOUDSMITH_USERNAME") ?: System.getenv("CLOUDSMITH_USERNAME")
-                password = project.findProperty("CLOUDSMITH_API_KEY") ?: System.getenv("CLOUDSMITH_API_KEY")
+                username = project.findProperty("REPOSILITE_USERNAME") ?: System.getenv("REPOSILITE_USERNAME")
+                password = project.findProperty("REPOSILITE_PASSWORD") ?: System.getenv("REPOSILITE_PASSWORD")
             }
         }
     }

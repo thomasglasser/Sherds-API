@@ -15,7 +15,7 @@ dependencies {
 	// Runtime
 	localRuntime "com.terraformersmc:modmenu:${modmenu_version}"
 	localRuntime "maven.modrinth:jade:${jade_version}+fabric"
-//	localRuntime "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
+	localRuntime "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 }
 
 loom {
