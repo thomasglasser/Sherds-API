@@ -40,25 +40,11 @@ repositories {
     exclusiveContent {
         forRepository {
             maven {
-                name = 'Cloth Config'
-                url = 'https://maven.shedaniel.me/'
-            }
-        }
-        filter {
-            includeGroupAndSubgroups "me.shedaniel"
-            includeGroupAndSubgroups "dev.architectury"
-        }
-    }
-    exclusiveContent {
-        forRepository {
-            maven {
                 name = 'Mod Menu'
                 url = 'https://maven.terraformersmc.com/releases'
             }
         }
         filter {
-            includeGroupAndSubgroups "me.shedaniel"
-            includeGroupAndSubgroups "dev.architectury"
             includeGroupAndSubgroups "com.terraformersmc"
         }
     }
@@ -91,7 +77,7 @@ repositories {
     }
     maven {
         name = 'TommyLib'
-        url = 'https://dl.cloudsmith.io/public/thomasglasser/tommylib/maven/'
+        url = 'https://maven.thomasglasser.dev/releases/'
         content {
             includeGroupAndSubgroups("dev.thomasglasser.tommylib")
         }
@@ -135,33 +121,41 @@ jar {
     }
 }
 
-processResources {
-    def expandProps = [
-            "version": version,
-            "group": project.group,
-            "minecraft_version": minecraft_version,
-            "next_minecraft_version": next_minecraft_version,
-            "fabric_version": fabric_version,
-            "fabric_loader_version": fabric_loader_version,
-            "mod_name": mod_name,
-            "mod_author": mod_author,
-            "mod_id": mod_id,
-            "license": license,
-            "description": project.description,
-            "neoforge_version": neoforge_version,
-            "major_fml_version": major_fml_version,
-            "contributors": contributors,
-            "java_version": java_version,
-            "icon": icon,
-            "github_name": github_name,
-            "tommylib_version": tommylib_version
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            version: project.version,
+            group: project.group,
+            minecraft_version: minecraft_version,
+            next_minecraft_version: next_minecraft_version,
+            mod_name: mod_name,
+            mod_author: mod_author,
+            mod_id: mod_id,
+            license: license,
+            description: project.description,
+            neoforge_version: neoforge_version,
+            major_fml_version: major_fml_version,
+            fabric_version: fabric_version,
+            fabric_loader_version: fabric_loader_version,
+            java_version: java_version,
+            icon: icon,
+            github_name: github_name,
+            tommylib_version: tommylib_version,
     ]
 
-    filesMatching(['fabric.mod.json', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
-        expand expandProps
-    }
-    inputs.properties(expandProps)
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+tasks.processResources.dependsOn generateModMetadata
+
+compileJava.dependsOn immaculateApply
+compileJava.finalizedBy immaculateCheck
 
 immaculate {
     workflows.register('java') {
@@ -211,10 +205,6 @@ immaculate {
     }
 }
 
-tasks.named('compileJava') {
-    dependsOn 'immaculateApply'
-}
-
 javadoc {
     failOnError = false
     options.tags = [ "apiNote", "reason" ]
@@ -225,9 +215,7 @@ publishing {
         register('mavenJava', MavenPublication) {
             artifactId base.archivesName.get()
             from components.java
-        }
 
-        maven(MavenPublication) {
             pom {
                 name = project.mod_name
                 description = project.description
@@ -259,11 +247,11 @@ publishing {
 
     repositories {
         maven {
-            name = "Cloudsmith"
-            url = "https://maven.cloudsmith.io/thomasglasser/${mod_id}/"
+            name = "Reposilite"
+            url = "https://maven.thomasglasser.dev/releases"
             credentials {
-                username = project.findProperty("CLOUDSMITH_USERNAME") ?: System.getenv("CLOUDSMITH_USERNAME")
-                password = project.findProperty("CLOUDSMITH_API_KEY") ?: System.getenv("CLOUDSMITH_API_KEY")
+                username = project.findProperty("REPOSILITE_USERNAME") ?: System.getenv("REPOSILITE_USERNAME")
+                password = project.findProperty("REPOSILITE_PASSWORD") ?: System.getenv("REPOSILITE_PASSWORD")
             }
         }
     }
