@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
+/// Utilities for registering and configuring sherd items.
 public class SherdUtils {
     /// Registers a sherd item with the given registry, id, pattern, and properties.
     public static Item registerSherd(Registry<Item> registry, Identifier id, Identifier pattern, Item.Properties properties) {

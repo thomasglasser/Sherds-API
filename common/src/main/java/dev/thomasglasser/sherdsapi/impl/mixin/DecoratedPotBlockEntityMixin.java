@@ -34,24 +34,23 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     private void saveStackDecorations(ValueOutput output, CallbackInfo ci) {
-        if (sherdsapi$decorations != null) {
-            output.store(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC, this.sherdsapi$decorations);
-        }
+        if (sherdsapi$decorations != null)
+            output.store(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC, sherdsapi$decorations);
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
     private void loadStackDecorations(ValueInput input, CallbackInfo ci) {
-        this.sherdsapi$decorations = input.read(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC).orElse(null);
+        sherdsapi$decorations = input.read(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC).orElse(null);
     }
 
     @Inject(method = "collectImplicitComponents", at = @At("TAIL"))
     private void collectStackDecorations(DataComponentMap.Builder components, CallbackInfo ci) {
-        components.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), this.sherdsapi$decorations);
+        components.set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), sherdsapi$decorations);
     }
 
     @Inject(method = "applyImplicitComponents", at = @At("TAIL"))
     private void applyStackDecorations(DataComponentGetter components, CallbackInfo ci) {
-        this.sherdsapi$decorations = components.get(SherdsApiDataComponents.STACK_POT_DECORATIONS.get());
+        sherdsapi$decorations = components.get(SherdsApiDataComponents.STACK_POT_DECORATIONS.get());
     }
 
     @Inject(method = "removeComponentsFromTag", at = @At("TAIL"))
@@ -60,7 +59,7 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
     }
 
     @Override
-    public StackPotDecorations sherdsapi$getDecorations() {
+    public @Nullable StackPotDecorations sherdsapi$getDecorations() {
         return sherdsapi$decorations;
     }
 }

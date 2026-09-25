@@ -160,8 +160,7 @@ compileJava.finalizedBy immaculateCheck
 
 immaculate {
     workflows.register('java') {
-        java()
-        files.from rootProject.fileTree("src", {
+        files.from rootProject.fileTree("src/main/java", {
             include "**/*.java"
         })
         noTabs()
@@ -173,41 +172,77 @@ immaculate {
             config = rootProject.file('codeformat/formatter-config.xml')
         }
 
-        // courtesy of diffplug/spotless#240
-        // https://github.com/diffplug/spotless/issues/240#issuecomment-385206606
+        custom 'canonicalizeNullable', { String fileContents ->
+            fileContents = fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('jakarta.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('edu.umd.cs.findbugs.annotations.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('org.checkerframework.checker.nullness.qual.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('android.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('com.google.errorprone.annotations.Nullable', 'org.jetbrains.annotations.Nullable')
+            return fileContents
+        }
+
         custom 'noWildcardImports', { String fileContents ->
-            if (fileContents.contains('*;\n')) {
-                throw new GradleException('No wildcard imports are allowed!')
+            if (Pattern.compile('(?m)^\\s*import\\s+(?:static\\s+)?[^;\\r\\n]+\\*;').matcher(fileContents).find()) {
+                throw new GradleException('No wildcard imports are allowed! Explicitly import each class.')
+            }
+        }
+
+        custom 'noStaticImports', { String fileContents ->
+            if (Pattern.compile('(?m)^\\s*import\\s+static\\s+').matcher(fileContents).find()) {
+                throw new GradleException('Static imports are disallowed. Use class qualification (e.g. Collections.emptyList()).')
             }
         }
 
         custom 'noNotNull', { String fileContents ->
-            if (fileContents.contains('@NotNull') || fileContents.contains('@Nonnull') || fileContents.contains('@NonNull')) {
-                throw new GradleException('@NotNull, @Nonnull, and @NonNull are disallowed. Packages are marked non-null by default via package-info.java.')
+            if (fileContents.contains('@NotNull') || fileContents.contains('@Nonnull')) {
+                throw new GradleException('@NotNull and @Nonnull are disallowed. Parameters and return types are non-null by default via package-info.java.')
             }
         }
 
-        //Trim any trailing whitespace from patch additions
-        def trailingWhitespace = Pattern.compile('^\\+.*[ \t]+$', Pattern.UNIX_LINES | Pattern.MULTILINE)
+        custom 'noVar', { String fileContents ->
+            if (Pattern.compile('(?m)^\\s*(?:final\\s+)?var\\s+[a-zA-Z_$][a-zA-Z0-9_$]*\\s*=').matcher(fileContents).find()) {
+                throw new GradleException("Do not use the 'var' keyword. Explicitly define variable types.")
+            }
+        }
+
+        custom 'blankLinesBeforeMemberTypes', { String fileContents ->
+            Pattern pattern = Pattern.compile('(?m)^([ \t]*\\}(?:[ \t]*//[^\\r\\n]*)?)\\r?\\n([ \t]*(?:(?:/\\*\\*(?:[\\s\\S]*?)\\*/|(?:///[^\\r\\n]*\\r?\\n[ \t]*)+)\\r?\\n[ \t]*)?(?:@[A-Za-z0-9_.]+(?:\\([^)]*\\))?\\s+)*(?:(?:public|protected|private|static|final|abstract|sealed|non-sealed)\\s+)*(?:class|interface|enum|record|@interface)\\s+[A-Za-z0-9_]+)')
+            return pattern.matcher(fileContents).replaceAll('$1\n\n$2')
+        }
+
         custom 'trimTrailingWhitespace', { String fileContents ->
-            Matcher matcher = trailingWhitespace.matcher(fileContents)
-            StringBuilder sb = new StringBuilder()
-            while (matcher.find()) {
-                matcher.appendReplacement(sb, matcher.group().trim())
-            }
-            matcher.appendTail(sb)
-            return sb.toString()
+            return fileContents.replaceAll('(?m)[ \t]+$', '')
         }
 
-        custom 'canonicalizeNullable', { String fileContents ->
-            fileContents = fileContents.replace('javax.annotation.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('jakarta.annotation.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('edu.umd.cs.findbugs.annotations.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('org.checkerframework.checker.nullness.qual.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('android.annotation.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('com.google.errorprone.annotations.Nullable', 'org.jspecify.annotations.Nullable')
-            fileContents = fileContents.replace('org.jetbrains.annotations.Nullable', 'org.jspecify.annotations.Nullable')
-            return fileContents
+        custom 'endWithNewline', { String fileContents ->
+            return fileContents.stripTrailing() + '\n'
+        }
+    }
+
+    workflows.register('gradle') {
+        files.from rootProject.fileTree(projectDir, {
+            include '**/*.gradle'
+            include '**/*.gradle.kts'
+            exclude 'build/**', '.gradle/**', 'src/generated/**'
+        })
+        custom 'trimTrailingWhitespace', { String fileContents ->
+            return fileContents.replaceAll('(?m)[ \t]+$', '')
+        }
+        custom 'endWithNewline', { String fileContents ->
+            return fileContents.stripTrailing() + '\n'
+        }
+    }
+
+    workflows.register('json') {
+        files.from rootProject.fileTree("src/main/resources", {
+            include "**/*.json"
+        })
+        custom 'trimTrailingWhitespace', { String fileContents ->
+            return fileContents.replaceAll('(?m)[ \t]+$', '')
+        }
+        custom 'endWithNewline', { String fileContents ->
+            return fileContents.stripTrailing() + '\n'
         }
     }
 }
