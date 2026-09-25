@@ -1,3 +1,5 @@
+import dev.thomasglasser.sherdsapi.gradle.GeneratePackageInfos
+
 plugins {
     id 'sherdsapi-common'
 }
@@ -22,6 +24,11 @@ dependencies {
     }
     commonJava project(path: ':common', configuration: 'commonJava')
     commonResources project(path: ':common', configuration: 'commonResources')
+}
+
+tasks.named('generatePackageInfos', GeneratePackageInfos).configure {
+    dependsOn(project(':common').tasks.named('generatePackageInfos'))
+    commonJavaFiles.from(configurations.commonJava)
 }
 
 tasks.named('compileJava', JavaCompile) {

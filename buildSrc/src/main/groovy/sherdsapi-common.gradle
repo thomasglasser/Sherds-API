@@ -1,3 +1,4 @@
+import dev.thomasglasser.sherdsapi.gradle.GeneratePackageInfos
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -6,6 +7,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'dev.lukebemish.immaculate'
+    id 'idea'
 }
 
 base {
@@ -19,6 +21,7 @@ java {
 }
 
 repositories {
+    mavenLocal()
     exclusiveContent {
         forRepository {
             maven {
@@ -91,7 +94,6 @@ repositories {
         url = 'https://maven.neoforged.net/mojang-meta'
     }
     mavenCentral()
-    mavenLocal()
 }
 
 // Declare capabilities on the outgoing configurations.
@@ -183,12 +185,12 @@ immaculate {
 
         custom 'noNotNull', { String fileContents ->
             if (fileContents.contains('@NotNull') || fileContents.contains('@Nonnull')) {
-                throw new GradleException('@NotNull and @Nonnull are disallowed.')
+                throw new GradleException('@NotNull and @Nonnull are disallowed. Parameters and return types are non-null by default via package-info.java.')
             }
         }
 
         //Trim any trailing whitespace from patch additions
-        def trailingWhitespace = Pattern.compile('^\\+.*[ \t]+\$', Pattern.UNIX_LINES | Pattern.MULTILINE)
+        def trailingWhitespace = Pattern.compile('^\\+.*[ \t]+$', Pattern.UNIX_LINES | Pattern.MULTILINE)
         custom 'trimTrailingWhitespace', { String fileContents ->
             Matcher matcher = trailingWhitespace.matcher(fileContents)
             StringBuilder sb = new StringBuilder()
@@ -199,11 +201,32 @@ immaculate {
             return sb.toString()
         }
 
-        custom 'jetbrainsNullable', { String fileContents ->
-            fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+        custom 'canonicalizeNullable', { String fileContents ->
+            fileContents = fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('jakarta.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('edu.umd.cs.findbugs.annotations.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('org.checkerframework.checker.nullness.qual.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('android.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+            fileContents = fileContents.replace('com.google.errorprone.annotations.Nullable', 'org.jetbrains.annotations.Nullable')
+            return fileContents
         }
     }
 }
+
+def generatePackageInfos = tasks.register('generatePackageInfos', GeneratePackageInfos) {
+    srcDir.set(file('src/main/java'))
+    outDir.set(layout.buildDirectory.dir("generated/sources/packageInfo/main/java"))
+}
+
+sourceSets.main.java.srcDir generatePackageInfos
+
+idea {
+    module {
+        generatedSourceDirs += file('build/generated/sources/packageInfo/main/java')
+    }
+}
+
+tasks.processResources.dependsOn generatePackageInfos
 
 javadoc {
     failOnError = false
@@ -257,7 +280,10 @@ publishing {
     }
 }
 
-signing {
-    useGpgCmd()
-    sign publishing.publications
+boolean isPublishToMavenLocal = gradle.startParameter.taskNames.any { it.contains('ToMavenLocal') }
+if (!isPublishToMavenLocal) {
+    signing {
+        useGpgCmd()
+        sign publishing.publications
+    }
 }

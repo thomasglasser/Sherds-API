@@ -64,7 +64,7 @@ configurations {
 }
 
 artifacts {
-	commonJava sourceSets.main.java.sourceDirectories.singleFile
+	commonJava file('src/main/java')
 	sourceSets.main.resources.sourceDirectories.files.each {
 		commonResources(it) {
 			builtBy tasks.generateModMetadata
