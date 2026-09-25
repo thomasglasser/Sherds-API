@@ -1,6 +1,6 @@
 package dev.thomasglasser.sherdsapi.impl;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public interface StackPotDecorationsHolder {
     @Nullable
