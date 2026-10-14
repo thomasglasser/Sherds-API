@@ -73,18 +73,9 @@ public abstract class DecoratedPotRendererMixin {
 
     @Unique
     private static Material sherdsapi$getSideMaterial(Optional<ItemStack> optional) {
-        if (optional.isPresent()) {
-            ItemStack stack = optional.get();
-            if (stack.has(SherdsApiDataComponents.SHERD_PATTERN.get())) {
-                Material material = sherdsapi$getDecoratedPotMaterial(stack.get(SherdsApiDataComponents.SHERD_PATTERN.get()));
-                if (material != null) {
-                    return material;
-                }
-            } else {
-                return getSideMaterial(Optional.of(stack.getItem()));
-            }
-        }
-
-        return Sheets.DECORATED_POT_SIDE;
+        return optional.map(stack -> {
+            ResourceLocation location = stack.get(SherdsApiDataComponents.SHERD_PATTERN.get());
+            return location != null ? sherdsapi$getDecoratedPotMaterial(location) : getSideMaterial(Optional.of(stack.getItem()));
+        }).orElse(Sheets.DECORATED_POT_SIDE);
     }
 }

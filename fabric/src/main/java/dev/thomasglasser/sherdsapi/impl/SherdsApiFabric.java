@@ -1,6 +1,5 @@
-package dev.thomasglasser.sherdsapi;
+package dev.thomasglasser.sherdsapi.impl;
 
-import dev.thomasglasser.sherdsapi.impl.SherdsApi;
 import net.fabricmc.api.ModInitializer;
 
 public class SherdsApiFabric implements ModInitializer {

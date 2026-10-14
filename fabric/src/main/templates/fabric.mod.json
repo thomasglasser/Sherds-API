@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.thomasglasser.sherdsapi.SherdsApiFabric"
+      "dev.thomasglasser.sherdsapi.impl.SherdsApiFabric"
     ],
     "client": [
     ],

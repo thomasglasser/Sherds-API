@@ -33,8 +33,8 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
         this(List.of(p_331754_, p_331488_, p_331845_, p_330988_));
     }
 
-    public static @Nullable StackPotDecorations load(@Nullable CompoundTag tag) {
-        return tag != null && tag.contains("patterns") ? CODEC.parse(NbtOps.INSTANCE, tag.get("patterns")).result().orElse(null) : null;
+    public static @Nullable StackPotDecorations load(@Nullable CompoundTag tag, String key) {
+        return tag != null && tag.contains(key) ? CODEC.parse(NbtOps.INSTANCE, tag.get(key)).result().orElse(null) : null;
     }
 
     public static ItemStack createDecoratedPotItem(StackPotDecorations decorations) {
@@ -52,13 +52,10 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
         }
     }
 
-    public CompoundTag save(CompoundTag tag) {
-        if (this.equals(EMPTY)) {
-            return tag;
-        } else {
-            tag.put("patterns", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow());
-            return tag;
-        }
+    public CompoundTag save(CompoundTag tag, String key) {
+        if (!this.equals(EMPTY))
+            tag.put(key, CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow());
+        return tag;
     }
 
     public List<ItemStack> ordered() {

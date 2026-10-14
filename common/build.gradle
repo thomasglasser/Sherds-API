@@ -13,6 +13,8 @@ neoForge {
 	}
 }
 
+sourceSets.main.resources.srcDir project(":common").file('./src/generated/resources')
+
 @CacheableRule
 abstract class MakeLibraryLenient implements ComponentMetadataRule {
 	final String targetGroup
