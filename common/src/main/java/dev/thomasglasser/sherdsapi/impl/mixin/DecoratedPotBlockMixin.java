@@ -28,7 +28,7 @@ public class DecoratedPotBlockMixin {
         if (decorations != null) {
             tooltip.add(CommonComponents.EMPTY);
             Stream.of(decorations.front(), decorations.left(), decorations.right(), decorations.back())
-                    .forEach(sherd -> tooltip.add(sherd.orElse(Items.BRICK.getDefaultInstance()).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY)));
+                    .forEach(sherd -> tooltip.add(sherd.orElseGet(Items.BRICK::getDefaultInstance).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY)));
         }
     }
 
