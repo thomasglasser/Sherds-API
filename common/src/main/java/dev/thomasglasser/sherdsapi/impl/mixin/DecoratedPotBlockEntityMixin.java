@@ -35,12 +35,12 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     private void saveStackDecorations(ValueOutput output, CallbackInfo ci) {
         if (sherdsapi$decorations != null)
-            output.store(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC, sherdsapi$decorations);
+            sherdsapi$decorations.save(output, sherdsapi$TAG_SHERDS);
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
     private void loadStackDecorations(ValueInput input, CallbackInfo ci) {
-        sherdsapi$decorations = input.read(sherdsapi$TAG_SHERDS, StackPotDecorations.CODEC).orElse(null);
+        sherdsapi$decorations = StackPotDecorations.load(input, sherdsapi$TAG_SHERDS);
     }
 
     @Inject(method = "collectImplicitComponents", at = @At("TAIL"))

@@ -44,13 +44,19 @@ public abstract class DecoratedPotRecipeMixin {
     private ItemStackTemplate result;
 
     @WrapOperation(method = "matches(Lnet/minecraft/world/item/crafting/CraftingInput;Lnet/minecraft/world/level/Level;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/crafting/Ingredient;test(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean allowPatterned(Ingredient pattern, ItemStack stack, Operation<Boolean> original) {
+    private boolean allowStackPattern(Ingredient pattern, ItemStack stack, Operation<Boolean> original) {
         return stack.has(SherdsApiDataComponents.SHERD_PATTERN.get()) || original.call(pattern, stack);
     }
 
     @Inject(method = "assemble(Lnet/minecraft/world/item/crafting/CraftingInput;)Lnet/minecraft/world/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     private void assembleStackDecorations(CraftingInput input, CallbackInfoReturnable<ItemStack> cir) {
-        if (input.items().stream().anyMatch(stack -> stack.has(SherdsApiDataComponents.SHERD_PATTERN.get()))) {
+        boolean hasPattern = false;
+        for (ItemStack stack : input.items())
+            if (stack.has(SherdsApiDataComponents.SHERD_PATTERN.get())) {
+                hasPattern = true;
+                break;
+            }
+        if (hasPattern) {
             StackPotDecorations decorations = new StackPotDecorations(back(input).copyWithCount(1), left(input).copyWithCount(1), right(input).copyWithCount(1), front(input).copyWithCount(1));
             DataComponentPatch components = DataComponentPatch.builder().set(SherdsApiDataComponents.STACK_POT_DECORATIONS.get(), decorations).build();
             cir.setReturnValue(this.result.apply(components));

@@ -1,7 +1,6 @@
 package dev.thomasglasser.sherdsapi.impl;
 
 import com.mojang.serialization.Codec;
-import dev.thomasglasser.sherdsapi.api.SherdsApiDataComponents;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,8 +18,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> left, Optional<ItemStack> right, Optional<ItemStack> front) implements TooltipProvider {
+    public static final StackPotDecorations EMPTY = new StackPotDecorations(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
     public static final Codec<StackPotDecorations> CODEC = ItemStack.OPTIONAL_CODEC
             .sizeLimitedListOf(4)
@@ -28,25 +31,40 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
     public static final StreamCodec<RegistryFriendlyByteBuf, StackPotDecorations> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC
             .apply(ByteBufCodecs.list(4))
             .map(StackPotDecorations::new, StackPotDecorations::ordered);
-    private StackPotDecorations(List<ItemStack> stacks) {
-        this(getStack(stacks, 0), getStack(stacks, 1), getStack(stacks, 2), getStack(stacks, 3));
+
+    public StackPotDecorations {
+        back = back.filter(s -> !s.isEmpty()).map(ItemStack::copy);
+        left = left.filter(s -> !s.isEmpty()).map(ItemStack::copy);
+        right = right.filter(s -> !s.isEmpty()).map(ItemStack::copy);
+        front = front.filter(s -> !s.isEmpty()).map(ItemStack::copy);
     }
 
     public StackPotDecorations(ItemStack back, ItemStack left, ItemStack right, ItemStack front) {
         this(List.of(back, left, right, front));
     }
 
-    private static Optional<ItemStack> getStack(List<ItemStack> sherds, int i) {
-        if (i >= sherds.size()) {
+    private StackPotDecorations(List<ItemStack> stacks) {
+        this(getItem(stacks, 0), getItem(stacks, 1), getItem(stacks, 2), getItem(stacks, 3));
+    }
+
+    public static @Nullable StackPotDecorations load(ValueInput input, String key) {
+        return input.read(key, CODEC).filter(d -> !d.equals(EMPTY)).orElse(null);
+    }
+
+    private static Optional<ItemStack> getItem(List<ItemStack> decorations, int index) {
+        if (index >= decorations.size())
             return Optional.empty();
-        } else {
-            ItemStack item = sherds.get(i);
-            return item.is(Items.BRICK) && !item.has(SherdsApiDataComponents.SHERD_PATTERN.get()) ? Optional.empty() : Optional.of(item);
-        }
+        ItemStack stack = decorations.get(index);
+        return stack.isEmpty() || ItemStack.isSameItemSameComponents(stack, Items.BRICK.getDefaultInstance()) ? Optional.empty() : Optional.of(stack);
     }
 
     public List<ItemStack> ordered() {
-        return Stream.of(this.back, this.left, this.right, this.front).map(stack -> stack.orElse(Items.BRICK.getDefaultInstance())).toList();
+        return Stream.of(back, left, right, front).map(stack -> stack.map(ItemStack::copy).orElseGet(Items.BRICK::getDefaultInstance)).toList();
+    }
+
+    public void save(ValueOutput output, String key) {
+        if (!equals(EMPTY))
+            output.store(key, CODEC, this);
     }
 
     @Override
@@ -59,11 +77,11 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
     }
 
     private static void addSideDetailsToTooltip(Consumer<Component> consumer, Optional<ItemStack> side) {
-        consumer.accept(side.orElse(Items.BRICK.getDefaultInstance()).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY));
+        consumer.accept(side.orElseGet(Items.BRICK::getDefaultInstance).getHoverName().plainCopy().withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StackPotDecorations other = (StackPotDecorations) o;

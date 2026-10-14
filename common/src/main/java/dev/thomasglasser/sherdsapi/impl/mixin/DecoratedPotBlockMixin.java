@@ -17,9 +17,8 @@ public class DecoratedPotBlockMixin {
     private static void overrideDecorationsDrops(DecoratedPotBlockEntity entity, Consumer<ItemStack> output, CallbackInfo ci) {
         StackPotDecorations decorations = ((StackPotDecorationsHolder) entity).sherdsapi$getDecorations();
         if (decorations != null) {
-            for (ItemStack stack : decorations.ordered()) {
+            for (ItemStack stack : decorations.ordered())
                 output.accept(stack);
-            }
             ci.cancel();
         }
     }
