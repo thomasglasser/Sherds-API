@@ -54,22 +54,21 @@ public record StackPotDecorations(Optional<ItemStack> back, Optional<ItemStack> 
     private static Optional<ItemStack> getItem(List<ItemStack> decorations, int index) {
         if (index >= decorations.size())
             return Optional.empty();
-        ItemStack item = decorations.get(index);
-        return item.isEmpty() || item.is(Items.BRICK) ? Optional.empty() : Optional.of(item);
+        ItemStack stack = decorations.get(index);
+        return stack.isEmpty() || ItemStack.isSameItemSameComponents(stack, Items.BRICK.getDefaultInstance()) ? Optional.empty() : Optional.of(stack);
     }
 
     public List<ItemStack> ordered() {
         return Stream.of(back, left, right, front).map(stack -> stack.map(ItemStack::copy).orElseGet(Items.BRICK::getDefaultInstance)).toList();
     }
 
-    public CompoundTag save(CompoundTag tag, String key) {
+    public void save(CompoundTag tag, String key) {
         if (!equals(EMPTY))
             tag.put(key, CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow());
-        return tag;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StackPotDecorations other = (StackPotDecorations) o;
